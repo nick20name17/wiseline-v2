@@ -6,6 +6,7 @@ import { CompanySettingsPage } from '@/pages/company-settings'
 import { ErrorPage } from '@/pages/error-page'
 import { HomePage } from '@/pages/home-page'
 import { LoginPage } from '@/pages/login-page'
+import { UserSettingsPage } from '@/pages/user-settings-page'
 import { UsersPage } from '@/pages/users-page'
 import { RequireAuthProvider } from '@/providers/require-auth-provider'
 
@@ -36,6 +37,14 @@ const router = createBrowserRouter([
                 element: (
                     <RequireAuthProvider>
                         <CompanySettingsPage />
+                    </RequireAuthProvider>
+                )
+            },
+            {
+                path: routes.userSettings,
+                element: (
+                    <RequireAuthProvider>
+                        <UserSettingsPage />
                     </RequireAuthProvider>
                 )
             },

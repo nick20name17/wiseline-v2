@@ -18,14 +18,15 @@ export const CompanySettings = () => {
 
     const [addCompanyProfiles] = useAddCompanyProfilesMutation()
 
+    const errorToast = (description: string) =>
+        toast.error('Change Password', { description })
+
     const handleAddCompanyProfiles = async (data: CompanyProfileData) => {
         try {
             addCompanyProfiles(data).unwrap()
         } catch (error) {
             const isErrorMessage = isErrorWithMessage(error)
-            toast.error('Working weekend', {
-                description: isErrorMessage ? error.data.detail : 'Something went wrong'
-            })
+            errorToast(isErrorMessage ? error.data.detail : 'Something went wrong')
         }
     }
 
