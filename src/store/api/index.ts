@@ -7,16 +7,15 @@ import {
     fetchBaseQuery
 } from '@reduxjs/toolkit/query/react'
 
-import { logout, tokenUpdated } from '../slices/auth'
-
+import type { UserData } from './users/users.types'
 import { apiBaseUrl } from '@/config/app'
+import { logout, tokenUpdated } from '@/store/slices/auth'
 import type {
     AccessToken,
     LoginData,
     LoginResponse,
     RefreshResponse,
-    RefreshToken,
-    UserData
+    RefreshToken
 } from '@/types/auth'
 
 const baseQuery = fetchBaseQuery({
@@ -24,7 +23,8 @@ const baseQuery = fetchBaseQuery({
     prepareHeaders: (headers, { getState }) => {
         const getAccessToken = () => {
             const stateToken = (getState() as RootState).auth.access
-            const tokenFromStorage = localStorage.getItem('token')
+            const tokenFromStorage =
+                localStorage.getItem('token') || sessionStorage.getItem('token')
 
             const parsedToken = tokenFromStorage
                 ? (JSON.parse(tokenFromStorage) as AccessToken)?.access
@@ -50,7 +50,7 @@ const baseQueryWithReauth: BaseQueryFn<
     let result = await baseQuery(args, api, extraOptions)
 
     if (result.error && result.error.status === 401) {
-        const token = localStorage.getItem('token')
+        const token = localStorage.getItem('token') ?? sessionStorage.getItem('token')
         const refresh = token !== null ? (JSON.parse(token) as RefreshToken)?.refresh : ''
 
         const content = JSON.stringify({ refresh })
@@ -72,7 +72,11 @@ const baseQueryWithReauth: BaseQueryFn<
             const { access } = refreshResult?.data
             api.dispatch(tokenUpdated({ access }))
 
-            localStorage.setItem('token', JSON.stringify({ access, refresh }))
+            if (localStorage.getItem('token')) {
+                localStorage.setItem('token', JSON.stringify({ access, refresh }))
+            } else {
+                sessionStorage.setItem('token', JSON.stringify({ access, refresh }))
+            }
 
             result = await baseQuery(args, api, extraOptions)
         } else {
@@ -82,6 +86,7 @@ const baseQueryWithReauth: BaseQueryFn<
 
     return result
 }
+
 export const api = createApi({
     reducerPath: 'api',
     baseQuery: baseQueryWithReauth,
@@ -93,16 +98,29 @@ export const api = createApi({
                 body
             })
         }),
-        getUser: build.query<UserData, void>({
-            query: () => 'user-info/',
-            providesTags: ['User']
+        getUser: build.query<UserData, number>({
+            query: (id) => `users/${id}/`,
+            providesTags: ['Users']
         })
     }),
-    tagTypes: ['User', 'TimeEntries']
+    tagTypes: [
+        'CompanyProfile',
+        'UsersProfile',
+        'Comments',
+        'Flows',
+        'Orders',
+        'SalesOrders',
+        'Stage',
+        'Items',
+        'Users',
+        'Categories',
+        'Capacities',
+        'EBMSItems',
+        'Calendar'
+    ]
 })
 
 export const {
     useLoginMutation,
-    useGetUserQuery,
     endpoints: { login, getUser }
 } = api

@@ -1,4 +1,5 @@
+import { DataTableColumnHeader } from './data-table-column-header'
 import { ModeToggle } from './mode-toggle'
 import { SearchBar } from './search-bar'
 
-export { ModeToggle, SearchBar }
+export { DataTableColumnHeader, ModeToggle, SearchBar }

@@ -4,6 +4,7 @@ import { type SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import type { infer as zodInfer } from 'zod'
 
+import { ForgetPasswordModal } from './forget-password-modal'
 import { Button } from '@/components/ui/button'
 import {
     Form,
@@ -97,6 +98,9 @@ export const Login = () => {
                         </Button>
                     </form>
                 </Form>
+                <div className='mt-5 flex justify-end'>
+                    <ForgetPasswordModal disabled={isLoading} />
+                </div>
             </div>
         </div>
     )

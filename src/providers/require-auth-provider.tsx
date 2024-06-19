@@ -8,7 +8,7 @@ import { selectIsAuth } from '@/store/slices/auth'
 export const RequireAuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const location = useLocation()
 
-    const isAuth = !useAppSelector(selectIsAuth)
+    const isAuth = useAppSelector(selectIsAuth)
 
     if (!isAuth) {
         return (

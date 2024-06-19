@@ -1,5 +1,7 @@
 import type { FetchBaseQueryMeta } from '@reduxjs/toolkit/query'
 
+import type { UserData } from '@/store/api/users/users.types'
+
 export interface AccessToken {
     access: string
 }
@@ -11,13 +13,6 @@ export interface RefreshToken {
 export interface LoginData {
     email: string
     password: string
-}
-
-export interface UserData {
-    id: number
-    email: string
-    is_staff: boolean
-    role: 'admin' | 'accountant' | 'manager' | 'employee'
 }
 
 export interface LoginResponse {

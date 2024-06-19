@@ -14,6 +14,7 @@ listenerMiddleware.startListening({
                 'token',
                 JSON.stringify({ refresh: action.payload.refresh })
             )
+            localStorage.setItem('id', JSON.stringify({ id: action.payload.user?.id }))
         }
     }
 })
