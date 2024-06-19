@@ -2,6 +2,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
 import { Layout } from '@/components/layout'
 import { routes } from '@/config/routes'
+import { CompanySettingsPage } from '@/pages/company-settings'
 import { ErrorPage } from '@/pages/error-page'
 import { HomePage } from '@/pages/home-page'
 import { LoginPage } from '@/pages/login-page'
@@ -27,6 +28,14 @@ const router = createBrowserRouter([
                 element: (
                     <RequireAuthProvider>
                         <UsersPage />
+                    </RequireAuthProvider>
+                )
+            },
+            {
+                path: routes.companySettings,
+                element: (
+                    <RequireAuthProvider>
+                        <CompanySettingsPage />
                     </RequireAuthProvider>
                 )
             },

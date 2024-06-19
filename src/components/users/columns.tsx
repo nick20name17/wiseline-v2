@@ -69,8 +69,8 @@ export const columns: ColumnDef<UserData>[] = [
                 <div className='h-4 w-4 flex-shrink-0' />
             </Button>
         ),
-        cell: ({ row }) => {
-            return (
+        cell: ({ row }) => (
+            <div className='flex w-full items-center justify-center'>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button
@@ -89,8 +89,8 @@ export const columns: ColumnDef<UserData>[] = [
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
-            )
-        },
+            </div>
+        ),
         enableSorting: false,
         enableHiding: false
     }
