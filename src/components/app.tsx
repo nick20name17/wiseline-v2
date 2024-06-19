@@ -2,6 +2,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
 import { Layout } from '@/components/layout'
 import { routes } from '@/config/routes'
+import { CalendarPage } from '@/pages/calendar-page'
 import { CompanySettingsPage } from '@/pages/company-settings'
 import { ErrorPage } from '@/pages/error-page'
 import { HomePage } from '@/pages/home-page'
@@ -45,6 +46,14 @@ const router = createBrowserRouter([
                 element: (
                     <RequireAuthProvider>
                         <UserSettingsPage />
+                    </RequireAuthProvider>
+                )
+            },
+            {
+                path: routes.calendar,
+                element: (
+                    <RequireAuthProvider>
+                        <CalendarPage />
                     </RequireAuthProvider>
                 )
             },
