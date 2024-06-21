@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
+import { useState } from 'react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import type { infer as zodInfer } from 'zod'
@@ -17,11 +18,13 @@ import {
 import { Input } from '@/components/ui/input'
 import { loginSchema } from '@/config/schemas'
 import { useLoginMutation } from '@/store/api'
+import { isErrorWithMessage } from '@/utils'
 
 type FormData = zodInfer<typeof loginSchema>
 
 export const Login = () => {
     const navigate = useNavigate()
+    const [error, setError] = useState('')
 
     const form = useForm<FormData>({
         resolver: zodResolver(loginSchema),
@@ -37,7 +40,8 @@ export const Login = () => {
 
             navigate('/')
         } catch (error) {
-            error
+            const isErrorMessage = isErrorWithMessage(error)
+            setError(isErrorMessage ? error.data.detail : 'An error occurred')
         }
     }
 
@@ -98,6 +102,11 @@ export const Login = () => {
                         </Button>
                     </form>
                 </Form>
+                {error ? (
+                    <div className='mt-4 text-sm font-medium text-destructive'>
+                        {error}
+                    </div>
+                ) : null}
                 <div className='mt-5 flex justify-end'>
                     <ForgetPasswordModal disabled={isLoading} />
                 </div>

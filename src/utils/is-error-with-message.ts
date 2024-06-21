@@ -1,12 +1,12 @@
 interface ErrorWithMessage {
     data: {
-        email: string
+        // email: string
         detail: string
-        package: string
-        location: string
-        priority: string
-        order: string
-        wrong_old_password: string
+        // package: string
+        // location: string
+        // priority: string
+        // order: string
+        // wrong_old_password: string
     }
 }
 

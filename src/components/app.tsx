@@ -5,6 +5,7 @@ import { routes } from '@/config/routes'
 import { CalendarPage } from '@/pages/calendar-page'
 import { CompanySettingsPage } from '@/pages/company-settings'
 import { ErrorPage } from '@/pages/error-page'
+import { FlowSettingsPage } from '@/pages/flow-settings-page'
 import { HomePage } from '@/pages/home-page'
 import { LoginPage } from '@/pages/login-page'
 import { UserSettingsPage } from '@/pages/user-settings-page'
@@ -54,6 +55,14 @@ const router = createBrowserRouter([
                 element: (
                     <RequireAuthProvider>
                         <CalendarPage />
+                    </RequireAuthProvider>
+                )
+            },
+            {
+                path: routes.flowSettings,
+                element: (
+                    <RequireAuthProvider>
+                        <FlowSettingsPage />
                     </RequireAuthProvider>
                 )
             },

@@ -41,7 +41,7 @@ const navigationItems = [
     {
         icon: Cog,
         label: 'Flow Settings',
-        link: routes.flows
+        link: routes.flowSettings
     },
     {
         icon: CircleUserRound,

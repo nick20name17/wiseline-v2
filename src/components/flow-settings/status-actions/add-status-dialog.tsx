@@ -1,0 +1,157 @@
+import { Loader2, PlusCircleIcon } from 'lucide-react'
+import { useState } from 'react'
+import { type SubmitHandler } from 'react-hook-form'
+import type { infer as zodInfer } from 'zod'
+
+import { Button } from '../../ui/button'
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage
+} from '../../ui/form'
+import { Tabs, TabsList, TabsTrigger } from '../../ui/tabs'
+import { Textarea } from '../../ui/textarea'
+
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { stagesColorPresets } from '@/config/flows'
+import { stageSchema } from '@/config/schemas'
+import { useCustomForm } from '@/hooks/use-custom-form'
+import { useAddStageMutation } from '@/store/api/stages/stages'
+import type { StagesAddData, StagesData } from '@/store/api/stages/stages.types'
+import { stopPropagation } from '@/utils/stop-events'
+
+interface Props {
+    flowId: number
+    statuses: StagesData[]
+}
+
+type FormData = zodInfer<typeof stageSchema>
+
+export const AddStatusDialog: React.FC<Props> = ({ flowId }) => {
+    const form = useCustomForm(stageSchema, { name: '', description: '' })
+
+    const [open, setOpen] = useState(false)
+
+    const [addStage, { isLoading }] = useAddStageMutation()
+
+    const defaultColor = stagesColorPresets[0]
+    const [color, setColor] = useState(defaultColor)
+
+    const reset = () => {
+        form.reset()
+        setOpen(false)
+    }
+
+    const handleAddStage = async (data: StagesAddData) => {
+        try {
+            await addStage(data).unwrap()
+            reset()
+        } catch (error) {}
+    }
+
+    const onValueChange = (value: string) => setColor(value)
+
+    const onSubmit: SubmitHandler<FormData> = (formData) =>
+        handleAddStage({
+            ...formData,
+            color,
+            flow: flowId
+        })
+
+    return (
+        <Dialog
+            open={open}
+            onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+                <Button
+                    onClick={stopPropagation}
+                    className='mt-1 flex w-full items-center gap-x-1.5'
+                    variant='outline'
+                    size='lg'>
+                    <PlusCircleIcon width='16px' />
+                    Add Status
+                </Button>
+            </DialogTrigger>
+            <DialogContent className='mx-2 rounded-md'>
+                <DialogHeader className='text-left'>
+                    <DialogTitle>Add status</DialogTitle>
+                </DialogHeader>
+                <Form {...form}>
+                    <form
+                        method='POST'
+                        className='mx-auto w-full space-y-5'
+                        onSubmit={form.handleSubmit(onSubmit)}>
+                        <FormField
+                            control={form.control}
+                            name='name'
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Stage name</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder='done'
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name='description'
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Stage description</FormLabel>
+                                    <FormControl>
+                                        <Textarea
+                                            className='resize-none'
+                                            placeholder='Enter status description'
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <Tabs
+                            onValueChange={onValueChange}
+                            defaultValue={defaultColor}>
+                            <TabsList className='gap-x-2 bg-transparent p-0'>
+                                {stagesColorPresets.map((color) => (
+                                    <TabsTrigger
+                                        key={color}
+                                        value={color}
+                                        className='h-6 w-6 rounded-sm data-[state=active]:outline data-[state=active]:outline-offset-2'
+                                        style={{ backgroundColor: color }}
+                                    />
+                                ))}
+                            </TabsList>
+                        </Tabs>
+
+                        <Button
+                            onClick={stopPropagation}
+                            className='w-full'
+                            type='submit'>
+                            {isLoading ? (
+                                <Loader2 className='h-4 w-4 animate-spin' />
+                            ) : (
+                                'Add'
+                            )}
+                        </Button>
+                    </form>
+                </Form>
+            </DialogContent>
+        </Dialog>
+    )
+}

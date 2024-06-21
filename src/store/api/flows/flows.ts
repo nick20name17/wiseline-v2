@@ -18,15 +18,8 @@ export const flows = api.injectEndpoints({
 
             providesTags: ['Flows']
         }),
-        getAllFlows: build.query<FlowsData[], Partial<FlowsQueryParams>>({
-            query: (params) => ({
-                url: 'flows/all',
-                params
-            }),
-            providesTags: ['Flows']
-        }),
-        getFlow: build.query<FlowsData, number>({
-            query: (id) => `flows/${id}`,
+        getAllFlows: build.query<FlowsData[], void>({
+            query: () => 'flows/all/',
             providesTags: ['Flows']
         }),
         addFlow: build.mutation<void, FlowsAddData>({
@@ -57,7 +50,6 @@ export const flows = api.injectEndpoints({
 
 export const {
     useGetFlowsQuery,
-    useGetFlowQuery,
     useGetAllFlowsQuery,
     useAddFlowMutation,
     usePatchFlowMutation,
