@@ -89,7 +89,7 @@ export const SideBar = () => {
                 className='w-[300px]'
                 side='left'>
                 <SheetHeader>
-                    <Link to='/'>
+                    <Link to={routes.orders}>
                         <SheetTitle className='flex items-center gap-x-3 uppercase'>
                             <img
                                 src={logo}

@@ -1,5 +1,5 @@
 import { Header } from '@/components/layout/header'
-import { UserSettings } from '@/components/user-settings'
+import { UserSettings } from '@/components/modules'
 
 export const UserSettingsPage = () => (
     <>

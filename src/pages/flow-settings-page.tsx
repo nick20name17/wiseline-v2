@@ -1,5 +1,5 @@
-import { FlowSettings } from '@/components/flow-settings'
 import { Header } from '@/components/layout/header'
+import { FlowSettings } from '@/components/modules'
 
 export const FlowSettingsPage = () => {
     return (

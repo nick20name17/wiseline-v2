@@ -1,5 +1,5 @@
-import { CompanySettings } from '@/components/company-settings'
 import { Header } from '@/components/layout/header'
+import { CompanySettings } from '@/components/modules'
 
 export const CompanySettingsPage = () => (
     <>

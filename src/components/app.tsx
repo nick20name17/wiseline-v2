@@ -6,15 +6,15 @@ import { CalendarPage } from '@/pages/calendar-page'
 import { CompanySettingsPage } from '@/pages/company-settings'
 import { ErrorPage } from '@/pages/error-page'
 import { FlowSettingsPage } from '@/pages/flow-settings-page'
-import { HomePage } from '@/pages/home-page'
 import { LoginPage } from '@/pages/login-page'
+import { OrdersPage } from '@/pages/orders-page'
 import { UserSettingsPage } from '@/pages/user-settings-page'
 import { UsersPage } from '@/pages/users-page'
 import { RequireAuthProvider } from '@/providers/require-auth-provider'
 
 const router = createBrowserRouter([
     {
-        path: routes.home,
+        path: routes.orders,
         element: <Layout />,
         errorElement: <ErrorPage />,
         children: [
@@ -22,7 +22,7 @@ const router = createBrowserRouter([
                 index: true,
                 element: (
                     <RequireAuthProvider>
-                        <HomePage />
+                        <OrdersPage />
                     </RequireAuthProvider>
                 )
             },

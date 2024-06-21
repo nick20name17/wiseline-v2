@@ -1,5 +1,5 @@
 export const routes = {
-    home: '/',
+    orders: '/',
     login: '/login',
     flowSettings: '/flow-settings',
     userSettings: '/user-settings',
