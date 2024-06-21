@@ -1,6 +1,6 @@
 import Helmet from 'react-helmet'
 
-import { usePageName } from '@/hooks/use-page-name'
+import { usePageName } from '@/hooks'
 
 interface Props {
     description?: string

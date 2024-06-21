@@ -2,15 +2,17 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
 import { Layout } from '@/components/layout'
 import { routes } from '@/config/routes'
-import { CalendarPage } from '@/pages/calendar-page'
-import { CompanySettingsPage } from '@/pages/company-settings'
-import { ErrorPage } from '@/pages/error-page'
-import { FlowSettingsPage } from '@/pages/flow-settings-page'
-import { LoginPage } from '@/pages/login-page'
-import { OrdersPage } from '@/pages/orders-page'
-import { UserSettingsPage } from '@/pages/user-settings-page'
-import { UsersPage } from '@/pages/users-page'
-import { RequireAuthProvider } from '@/providers/require-auth-provider'
+import {
+    CalendarPage,
+    CompanySettingsPage,
+    ErrorPage,
+    FlowSettingsPage,
+    LoginPage,
+    OrdersPage,
+    RequireAuthProvider,
+    UserSettingsPage,
+    UsersPage
+} from '@/pages'
 
 const router = createBrowserRouter([
     {

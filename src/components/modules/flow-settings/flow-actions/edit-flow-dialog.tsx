@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { flowSchema } from '@/config/schemas'
-import { useCustomForm } from '@/hooks/use-custom-form'
+import { useCustomForm } from '@/hooks'
 import { usePatchFlowMutation } from '@/store/api/flows/flows'
 import type { FlowsPatchData } from '@/store/api/flows/flows.types'
 import { stopPropagation } from '@/utils/stop-events'
