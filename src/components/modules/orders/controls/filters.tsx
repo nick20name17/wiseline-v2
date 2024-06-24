@@ -13,8 +13,8 @@ import {
 
 export const Filters = () => {
     const [date, setDate] = useQueryParam('date', StringParam)
-    const [overdue = false, setOverdue] = useQueryParam('overdue', BooleanParam)
-    const [completed = false, setCompleted] = useQueryParam('completed', BooleanParam)
+    const [overdue, setOverdue] = useQueryParam('overdue', BooleanParam)
+    const [completed, setCompleted] = useQueryParam('completed', BooleanParam)
 
     const filters = useMemo(() => {
         const newFilters: string[] = []
@@ -24,13 +24,13 @@ export const Filters = () => {
     }, [overdue, completed])
 
     const removeFilter = (filter: string) => {
-        if (filter === 'overdue') setOverdue(false)
-        if (filter === 'completed') setCompleted(false)
+        if (filter === 'overdue') setOverdue(null)
+        if (filter === 'completed') setCompleted(null)
     }
 
     useEffect(() => {
         if (overdue && date) {
-            setDate('')
+            setDate(null)
         }
     }, [overdue, date])
 
