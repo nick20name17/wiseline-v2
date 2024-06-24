@@ -42,8 +42,7 @@ export const UserMenu = () => {
                 <DropdownMenuLabel
                     onClick={handleLogOut}
                     className='flex flex-col items-start font-normal'>
-                    {/* <span>{`${currentUser?.first_name} ${currentUser?.last_name}`}</span> */}
-                    <span>John Doe</span>
+                    <span>{`${currentUser?.first_name} ${currentUser?.last_name}`}</span>
                     <span className='text-muted-foreground'>{currentUser?.email}</span>
                 </DropdownMenuLabel>
 
