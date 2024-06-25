@@ -70,38 +70,34 @@ export const multiupdate = api.injectEndpoints({
             }),
             async onQueryStarted({ ...data }, { dispatch, queryFulfilled }) {
                 const patchResult = dispatch(
-                    embs.util.updateQueryData(
-                        'getOrders',
-                        {} as EBMSItemsQueryParams,
-                        (draft) => {
-                            const originOrdersIds = data.origin_orders
+                    embs.util.updateQueryData('getOrders', {} as any, (draft) => {
+                        const originOrdersIds = data.origin_orders
 
-                            const items = draft.results.filter((item) => {
-                                return originOrdersIds.includes(item.id)
-                            })
+                        const items = draft.results.filter((item) => {
+                            return originOrdersIds.includes(item.id)
+                        })
 
-                            items.forEach((item) => {
-                                if (item && data.ship_date) {
-                                    Object.assign(item, {
-                                        ship_date: data.ship_date
-                                    })
+                        items.forEach((item) => {
+                            if (item && data.ship_date) {
+                                Object.assign(item, {
+                                    ship_date: data.ship_date
+                                })
+                            }
+
+                            if (item?.sales_order && data?.production_date) {
+                                Object.assign(item.sales_order, data)
+                            } else if (data?.production_date) {
+                                const salesOrder = {
+                                    id: Math.random(),
+                                    ...data
                                 }
 
-                                if (item?.sales_order && data?.production_date) {
-                                    Object.assign(item.sales_order, data)
-                                } else if (data?.production_date) {
-                                    const salesOrder = {
-                                        id: Math.random(),
-                                        ...data
-                                    }
-
-                                    Object.assign(item, {
-                                        sales_order: salesOrder
-                                    })
-                                }
-                            })
-                        }
-                    )
+                                Object.assign(item, {
+                                    sales_order: salesOrder
+                                })
+                            }
+                        })
+                    })
                 )
 
                 try {
