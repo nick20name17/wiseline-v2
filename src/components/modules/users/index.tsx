@@ -11,7 +11,7 @@ export const Users = () => {
             <Controls />
             <UsersTable
                 columns={columns}
-                data={data! || []}
+                data={data || []}
                 isLoading={isLoading}
             />
         </div>

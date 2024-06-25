@@ -1,7 +1,6 @@
-import { zodResolver } from '@hookform/resolvers/zod'
 import { Edit, Loader2 } from 'lucide-react'
 import { useState } from 'react'
-import { type SubmitHandler, useForm } from 'react-hook-form'
+import { type SubmitHandler } from 'react-hook-form'
 import { toast } from 'sonner'
 import type { infer as zodInfer } from 'zod'
 
@@ -22,6 +21,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { userPatchSchema } from '@/config/schemas'
+import { useCustomForm } from '@/hooks'
 import { usePatchUserMutation } from '@/store/api/users/users'
 import { useAppSelector } from '@/store/hooks/hooks'
 import { selectUser } from '@/store/slices/auth'
@@ -36,15 +36,10 @@ export const UserSettingsForms = () => {
 
     const [patchUser, { isLoading }] = usePatchUserMutation()
 
-    const form = useForm<FormData>({
-        resolver: zodResolver(userPatchSchema),
-        mode: 'onSubmit',
-        shouldFocusError: true,
-        values: {
-            email,
-            first_name,
-            last_name
-        }
+    const form = useCustomForm(userPatchSchema, {
+        email,
+        first_name,
+        last_name
     })
 
     const successToast = () =>

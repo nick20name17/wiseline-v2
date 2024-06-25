@@ -1,6 +1,5 @@
-import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
-import { type SubmitHandler, useForm } from 'react-hook-form'
+import { type SubmitHandler } from 'react-hook-form'
 import { toast } from 'sonner'
 import type { infer as zodInfer } from 'zod'
 
@@ -16,6 +15,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { changePasswordSchema } from '@/config/schemas'
+import { useCustomForm } from '@/hooks'
 import { useChangePasswordMutation } from '@/store/api/passwords/passwords'
 import { useAppSelector } from '@/store/hooks/hooks'
 import { selectUser } from '@/store/slices/auth'
@@ -26,15 +26,10 @@ type FormData = zodInfer<typeof changePasswordSchema>
 export const PasswordChange = () => {
     const [changePassword, { isLoading }] = useChangePasswordMutation()
 
-    const form = useForm<FormData>({
-        resolver: zodResolver(changePasswordSchema),
-        mode: 'onSubmit',
-        values: {
-            old_password: '',
-            new_password1: '',
-            new_password2: ''
-        },
-        shouldFocusError: true
+    const form = useCustomForm(changePasswordSchema, {
+        old_password: '',
+        new_password1: '',
+        new_password2: ''
     })
 
     const userId = useAppSelector(selectUser)?.id

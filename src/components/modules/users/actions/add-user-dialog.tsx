@@ -1,7 +1,6 @@
-import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2, PlusCircle } from 'lucide-react'
 import { useState } from 'react'
-import { type SubmitHandler, useForm } from 'react-hook-form'
+import { type SubmitHandler } from 'react-hook-form'
 import { toast } from 'sonner'
 import type { infer as zodInfer } from 'zod'
 
@@ -30,6 +29,7 @@ import {
     SelectValue
 } from '@/components/ui/select'
 import { userSchema } from '@/config/schemas'
+import { useCustomForm } from '@/hooks'
 import { useAddUserMutation } from '@/store/api/users/users'
 import type { UserRoles } from '@/store/api/users/users.types'
 import { isErrorWithMessage, stopPropagation } from '@/utils'
@@ -40,10 +40,11 @@ export const AddUserDialog = () => {
     const [open, setOpen] = useState(false)
     const [addUser, { isLoading }] = useAddUserMutation()
 
-    const form = useForm<FormData>({
-        resolver: zodResolver(userSchema),
-        mode: 'onSubmit',
-        shouldFocusError: true
+    const form = useCustomForm(userSchema, {
+        email: '',
+        first_name: '',
+        last_name: '',
+        role: ''
     })
 
     const currentUserName = `${form.watch('first_name')} ${form.watch('last_name')}`
@@ -58,6 +59,11 @@ export const AddUserDialog = () => {
             description: message
         })
 
+    const reset = () => {
+        form.reset()
+        setOpen(false)
+    }
+
     const handleAddUser = async (data: FormData) => {
         try {
             await addUser({
@@ -70,11 +76,7 @@ export const AddUserDialog = () => {
             const isErrorMessage = isErrorWithMessage(error)
             errorToast(isErrorMessage ? error.data.detail : 'Something went wrong')
         }
-        form.setValue('email', '')
-        form.setValue('first_name', '')
-        form.setValue('last_name', '')
-        form.setValue('role', '')
-        setOpen(false)
+        reset()
     }
 
     const onSubmit: SubmitHandler<FormData> = (formData) => handleAddUser(formData)

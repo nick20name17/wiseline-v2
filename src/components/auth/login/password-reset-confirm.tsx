@@ -1,6 +1,5 @@
-import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
-import { type SubmitHandler, useForm } from 'react-hook-form'
+import { type SubmitHandler } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import type { infer as zodInfer } from 'zod'
@@ -17,6 +16,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { routes } from '@/config/routes'
 import { passwordResetConfirmSchema } from '@/config/schemas'
+import { useCustomForm } from '@/hooks'
 import { usePasswordResetConfirmMutation } from '@/store/api/passwords/passwords'
 import { isErrorWithMessage } from '@/utils'
 
@@ -27,10 +27,9 @@ export const PasswordResetConfirm = () => {
 
     const { uidb64, token } = useParams()
 
-    const form = useForm<FormData>({
-        resolver: zodResolver(passwordResetConfirmSchema),
-        mode: 'onSubmit',
-        shouldFocusError: true
+    const form = useCustomForm(passwordResetConfirmSchema, {
+        new_password1: '',
+        new_password2: ''
     })
 
     const successToast = () =>

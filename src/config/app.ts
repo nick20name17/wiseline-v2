@@ -1,3 +1,3 @@
 export const appName = 'Wiseline'
 
-export const apiBaseUrl = 'https://api.dev-ebms.fun/'
+export const apiBaseUrl = 'https://api.wiseline.app/'

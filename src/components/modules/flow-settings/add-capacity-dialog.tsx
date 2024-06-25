@@ -1,7 +1,6 @@
-import { zodResolver } from '@hookform/resolvers/zod'
 import { Edit2Icon, Loader2 } from 'lucide-react'
 import { useState } from 'react'
-import { type SubmitHandler, useForm } from 'react-hook-form'
+import { type SubmitHandler } from 'react-hook-form'
 import type { infer as zodInfer } from 'zod'
 
 import { Button } from '@/components/ui/button'
@@ -22,6 +21,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { capacitySchema } from '@/config/schemas'
+import { useCustomForm } from '@/hooks'
 import {
     useAddCapacityMutation,
     usePatchCapacityMutation
@@ -45,14 +45,7 @@ export const AddCapacityDialog: React.FC<Props> = ({
     capacity,
     capacityId
 }) => {
-    const form = useForm<FormData>({
-        resolver: zodResolver(capacitySchema),
-        mode: 'onSubmit',
-        shouldFocusError: true,
-        values: {
-            per_day: String(capacity ?? '')
-        }
-    })
+    const form = useCustomForm(capacitySchema, { per_day: String(capacity ?? '') })
 
     const [addCapacity, { isLoading }] = useAddCapacityMutation()
     const [patchCapacity, { isLoading: isPatching }] = usePatchCapacityMutation()

@@ -1,7 +1,6 @@
-import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import { useState } from 'react'
-import { type SubmitHandler, useForm } from 'react-hook-form'
+import { type SubmitHandler } from 'react-hook-form'
 import { toast } from 'sonner'
 import type { infer as zodInfer } from 'zod'
 
@@ -23,6 +22,7 @@ import {
 import { Input } from '@/components/ui//input'
 import { Button } from '@/components/ui/button'
 import { emailSchema } from '@/config/schemas'
+import { useCustomForm } from '@/hooks'
 import { usePasswordResetMutation } from '@/store/api/passwords/passwords'
 import { isErrorWithMessage } from '@/utils'
 
@@ -36,11 +36,7 @@ export const ForgetPasswordModal: React.FC<ForgetPasswordModalProps> = ({ disabl
     const [open, setOpen] = useState(false)
     const handleClose = () => setOpen(false)
 
-    const form = useForm<FormData>({
-        resolver: zodResolver(emailSchema),
-        mode: 'onSubmit',
-        shouldFocusError: true
-    })
+    const form = useCustomForm(emailSchema, { email: '' })
 
     const [passwordReset, { isLoading }] = usePasswordResetMutation()
 
@@ -60,11 +56,10 @@ export const ForgetPasswordModal: React.FC<ForgetPasswordModalProps> = ({ disabl
                 .unwrap()
                 .then(() => successToast('Password reset link sent to your email'))
 
-            form.setValue('email', '')
+            form.reset()
             handleClose()
         } catch (error) {
             const isErrorMessage = isErrorWithMessage(error)
-
             errorToast(isErrorMessage ? error.data.detail : 'Something went wrong')
         }
     }

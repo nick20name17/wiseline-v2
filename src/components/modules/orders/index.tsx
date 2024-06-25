@@ -1,15 +1,10 @@
-import React from 'react'
+import { useQueryParam } from 'use-query-params'
 
-import { Button } from '@/components/ui/button'
+import { AllOrders } from './all-orders'
+import { Items } from './items'
 
 export const Orders = () => {
-    const [count, setCount] = React.useState(0)
+    const [category] = useQueryParam('category')
 
-    const increment = () => setCount(count + 1)
-
-    return (
-        <div className='flex h-screen items-center justify-center'>
-            <Button onClick={increment}>Count: {count}</Button>
-        </div>
-    )
+    return category === 'All' ? <AllOrders /> : <Items />
 }

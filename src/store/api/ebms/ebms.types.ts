@@ -161,14 +161,13 @@ export interface EBMSItemsResponse extends Response<EBMSItemsData> {}
 export interface OrdersQueryParams extends BaseQueryParams {
     invoice: number
     name: string
-    date: string
-    is_scheduled: string | undefined
+    date: string | null
+    is_scheduled: boolean | null
     created_at: string
     categories: string
-    over_due: boolean
-
-    completed: boolean
-    search: string
+    over_due: boolean | null
+    completed: boolean | null
+    search: string | null
     ordering: string
 }
 

@@ -1,7 +1,6 @@
-import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import { useState } from 'react'
-import { type SubmitHandler, useForm } from 'react-hook-form'
+import { type SubmitHandler } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import type { infer as zodInfer } from 'zod'
 
@@ -17,6 +16,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { loginSchema } from '@/config/schemas'
+import { useCustomForm } from '@/hooks'
 import { useLoginMutation } from '@/store/api'
 import { isErrorWithMessage } from '@/utils'
 
@@ -26,18 +26,13 @@ export const Login = () => {
     const navigate = useNavigate()
     const [error, setError] = useState('')
 
-    const form = useForm<FormData>({
-        resolver: zodResolver(loginSchema),
-        mode: 'onSubmit',
-        shouldFocusError: true
-    })
+    const form = useCustomForm(loginSchema, { email: '', password: '' })
 
     const [login, { isLoading }] = useLoginMutation()
 
     const handleLogin = async (data: FormData) => {
         try {
             await login(data).unwrap()
-
             navigate('/')
         } catch (error) {
             const isErrorMessage = isErrorWithMessage(error)

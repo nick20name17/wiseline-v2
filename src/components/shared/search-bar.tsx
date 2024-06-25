@@ -19,7 +19,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ placeholder = 'Search...' 
         <Input
             value={search || ''}
             onChange={handleSearch}
-            className='h-10 w-60'
+            className='h-10 w-48'
             placeholder={placeholder}
         />
     )

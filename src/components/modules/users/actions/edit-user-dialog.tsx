@@ -1,7 +1,6 @@
-import { zodResolver } from '@hookform/resolvers/zod'
 import { Edit2Icon, Loader2 } from 'lucide-react'
 import React, { useState } from 'react'
-import { type SubmitHandler, useForm } from 'react-hook-form'
+import { type SubmitHandler } from 'react-hook-form'
 import { toast } from 'sonner'
 import type { infer as zodInfer } from 'zod'
 
@@ -30,6 +29,7 @@ import {
     SelectValue
 } from '@/components/ui/select'
 import { userSchema } from '@/config/schemas'
+import { useCustomForm } from '@/hooks'
 import { usePatchUserMutation } from '@/store/api/users/users'
 import type { UserData, UserRoles } from '@/store/api/users/users.types'
 import { isErrorWithMessage, stopPropagation } from '@/utils'
@@ -45,12 +45,7 @@ export const EditUserDialog: React.FC<Props> = ({ user }) => {
 
     const userName = `${first_name} ${last_name}`
 
-    const form = useForm<FormData>({
-        resolver: zodResolver(userSchema),
-        mode: 'onSubmit',
-        shouldFocusError: true,
-        defaultValues: user
-    })
+    const form = useCustomForm(userSchema, user)
 
     const [patchUser, { isLoading }] = usePatchUserMutation()
 
