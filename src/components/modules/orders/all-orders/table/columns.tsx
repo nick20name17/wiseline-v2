@@ -99,7 +99,7 @@ export const columns: ColumnDef<OrdersData>[] = [
             />
         ),
         cell: ({ row }) => (
-            <div className='w-64 pl-4 pr-1'>{row.original?.customer ?? '-'}</div>
+            <div className='w-64 pl-4 pr-1'>{row.original?.customer || '-'}</div>
         )
     },
     {
@@ -150,12 +150,10 @@ export const columns: ColumnDef<OrdersData>[] = [
             <DataTableColumnHeader
                 column={column}
                 title='Name'
-                className='min-w-[256px] max-w-64 justify-start text-left'
+                className='w-64 max-w-64 justify-start text-left'
             />
         ),
-        cell: ({ row }) => (
-            <div className='w-64 pl-4 pr-1'>{row.original.c_name ?? '-'}</div>
-        )
+        cell: ({ row }) => <div className='w-64 pl-4'>{row.original.c_name || '-'}</div>
     },
     {
         accessorKey: 'c_city',
@@ -167,7 +165,7 @@ export const columns: ColumnDef<OrdersData>[] = [
             />
         ),
         cell: ({ row }) => (
-            <div className='w-32 text-center'>{row.original.c_city ?? '-'}</div>
+            <div className='w-32 text-center text-xs'>{row.original.c_city || '-'}</div>
         )
     },
     {

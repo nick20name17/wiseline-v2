@@ -49,10 +49,9 @@ export function Pagination<TData>({ table, page, isDataLoading }: Props<TData>) 
         setLimit(table.getState().pagination.pageSize)
     }, [table.getState().pagination.pageSize, limit])
 
-    const [_, setGroupedView] = useQueryParam('grouped', BooleanParam)
+    const [grouped = true, setGrouped] = useQueryParam('grouped', BooleanParam)
 
     const [visibleColumns, setVisibleColumns] = useState<string[]>([])
-    const [grouped, setGrouped] = useState(true)
 
     const { data: usersProfilesData } = useGetUsersProfilesQuery()
     const [addUsersProfiles] = useAddUsersProfilesMutation()
@@ -75,7 +74,6 @@ export function Pagination<TData>({ table, page, isDataLoading }: Props<TData>) 
 
     const handleSetGrouped = (value: boolean) => {
         setGrouped(value)
-        setGroupedView(value)
     }
 
     // useEffect(() => {
@@ -204,7 +202,7 @@ export function Pagination<TData>({ table, page, isDataLoading }: Props<TData>) 
 
             {category !== 'All' ? (
                 <Toggle
-                    pressed={grouped}
+                    pressed={grouped!}
                     onPressedChange={handleSetGrouped}
                     className='data=[state=on]:border data-[state=on]:border-primary data-[state=on]:bg-background data-[state=on]:text-primary'
                     variant='outline'

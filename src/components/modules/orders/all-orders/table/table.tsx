@@ -176,7 +176,7 @@ export const OrdersTable = ({
                                             }>
                                             {row.getVisibleCells().map((cell) => (
                                                 <TableCell
-                                                    className='px-0.5 py-1.5 first:w-10 [&div]:h-[53px]'
+                                                    className='px-0 py-1.5 first:w-10 [&div]:h-[53px]'
                                                     key={cell.id}>
                                                     {flexRender(
                                                         cell.column.columnDef.cell,

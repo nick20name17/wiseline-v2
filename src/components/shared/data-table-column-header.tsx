@@ -1,4 +1,5 @@
 import { ArrowUpDown } from 'lucide-react'
+import { BooleanParam, useQueryParam } from 'use-query-params'
 
 import { Button } from '../ui/button'
 
@@ -10,12 +11,11 @@ export const DataTableColumnHeader = <TData, TValue>({
     column,
     className
 }: DataTableColumnHeaderProps<TData, TValue>) => {
-    // const groupedView = useAppSelector((store) => store.orders.groupedView)
-    // const category = !!useAppSelector((store) => store.orders.category)
+    const [groupedView] = useQueryParam('grouped', BooleanParam)
 
     return (
         <Button
-            disabled={false && false}
+            disabled={groupedView!}
             variant='ghost'
             className={cn(
                 '!flex w-full items-center !justify-between gap-x-2',
