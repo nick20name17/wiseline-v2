@@ -19,13 +19,13 @@ import {
 } from '@/store/api/items/items'
 import type { ItemsAddData, ItemsPatchData } from '@/store/api/items/items.types'
 
-interface Props {
+interface FlowCellProps {
     item: Item | undefined
     orderId: string
     id: string
 }
 
-export const FlowCell: React.FC<Props> = ({ item, orderId, id }) => {
+export const FlowCell: React.FC<FlowCellProps> = ({ item, orderId, id }) => {
     const [category] = useQueryParam('category', StringParam)
     const { data: flowsData } = useGetFlowsQuery({
         category__prod_type: category!

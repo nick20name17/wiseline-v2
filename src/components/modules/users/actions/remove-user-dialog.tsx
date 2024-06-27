@@ -14,11 +14,11 @@ import { useRemoveUserMutation } from '@/store/api/users/users'
 import type { UserData } from '@/store/api/users/users.types'
 import { isErrorWithMessage, stopPropagation } from '@/utils'
 
-interface Props {
+interface RemoveUserDialogProps {
     user: UserData
 }
 
-export const RemoveUserDialog: React.FC<Props> = ({ user }) => {
+export const RemoveUserDialog: React.FC<RemoveUserDialogProps> = ({ user }) => {
     // const isDisabled = user.role === 'admin'
     const userName = `${user.first_name} ${user.last_name}`
     const userId = user.id

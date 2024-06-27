@@ -2,11 +2,11 @@ import Helmet from 'react-helmet'
 
 import { usePageName } from '@/hooks'
 
-interface Props {
+interface HeadProps {
     description?: string
 }
 
-export const Head: React.FC<Props> = ({ description = 'some description' }) => {
+export const Head: React.FC<HeadProps> = ({ description = 'some description' }) => {
     const pageName = usePageName()
 
     return (

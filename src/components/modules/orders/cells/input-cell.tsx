@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import { DebounceInput } from 'react-debounce-input'
 import { toast } from 'sonner'
 
 import { Input } from '@/components/ui/input'
+import { useCallbackDebounce } from '@/hooks/use-callback-debounce'
 import { useAddItemMutation, usePatchItemMutation } from '@/store/api/items/items'
 import type { InputEvent } from '@/types/common'
 import { capitalize } from '@/utils/capitalize'
@@ -85,13 +85,13 @@ export const InputCell: React.FC<Props> = ({
         }
     }
 
-    const handleItemMutation = (value: number) => {
+    const handleItemMutation = useCallbackDebounce((value: number) => {
         if (!itemId) {
             handleAddOrder(value)
         } else {
             handlePatchOrder(value, itemId)
         }
-    }
+    }, 300)
 
     const [priorityValue, setPriorityValue] = useState(value)
 
@@ -108,13 +108,11 @@ export const InputCell: React.FC<Props> = ({
 
     return (
         <div className='!w-20'>
-            <DebounceInput
-                element={Input as any}
+            <Input
                 value={priorityValue}
                 type='number'
                 inputMode='numeric'
                 placeholder='0'
-                debounceTimeout={400}
                 onChange={onPriorityChange}
             />
         </div>

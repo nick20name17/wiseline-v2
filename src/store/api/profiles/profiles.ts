@@ -8,7 +8,7 @@ export const users = api.injectEndpoints({
             query: () => 'profiles/company/',
             providesTags: ['CompanyProfile']
         }),
-        addCompanyProfiles: build.mutation<any, CompanyProfileData>({
+        addCompanyProfiles: build.mutation<void, CompanyProfileData>({
             query: (data) => ({
                 url: 'profiles/company/',
                 method: 'POST',

@@ -24,13 +24,17 @@ import {
     useGetUsersProfilesQuery
 } from '@/store/api/profiles/profiles'
 
-interface Props<TData> {
+interface PaginationProps<TData> {
     table: Table<TData>
     page: 'orders' | 'items'
     isDataLoading: boolean
 }
 
-export function Pagination<TData>({ table, page, isDataLoading }: Props<TData>) {
+export function Pagination<TData>({
+    table,
+    page,
+    isDataLoading
+}: PaginationProps<TData>) {
     const [category] = useQueryParam('category', StringParam)
     const [offset, setOffset] = useQueryParam('offset', NumberParam)
     const [limit, setLimit] = useQueryParam('limit', NumberParam)

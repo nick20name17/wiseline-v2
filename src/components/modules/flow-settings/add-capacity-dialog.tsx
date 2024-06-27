@@ -32,7 +32,7 @@ import type {
 } from '@/store/api/capacities/capacities.types'
 import { stopPropagation } from '@/utils/stop-events'
 
-interface Props {
+interface AddCapacityDialogProps {
     categoryId: number
     capacityId: number | null
     capacity: number
@@ -40,7 +40,7 @@ interface Props {
 
 type FormData = zodInfer<typeof capacitySchema>
 
-export const AddCapacityDialog: React.FC<Props> = ({
+export const AddCapacityDialog: React.FC<AddCapacityDialogProps> = ({
     categoryId,
     capacity,
     capacityId

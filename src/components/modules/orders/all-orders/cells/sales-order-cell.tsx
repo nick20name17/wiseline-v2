@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react'
-import { DebounceInput } from 'react-debounce-input'
 import { toast } from 'sonner'
 
 import { Input } from '@/components/ui/input'
+import { useCallbackDebounce } from '@/hooks/use-callback-debounce'
 import {
     useAddSalesOrderMutation,
     usePatchSalesOrderMutation
 } from '@/store/api/sales-orders/sales-orders'
+import { useAppSelector } from '@/store/hooks/hooks'
+import { selectUser } from '@/store/slices/auth'
 import type { InputEvent } from '@/types/common'
 import { capitalize } from '@/utils/capitalize'
 import { isErrorWithMessage } from '@/utils/is-error-with-message'
@@ -86,15 +88,15 @@ export const SalesOrderCell: React.FC<Props> = ({
         }
     }
 
-    const handleItemMutation = (value: number) => {
+    const [currentValue, setCurrentValue] = useState(value)
+
+    const handleItemMutation = useCallbackDebounce((value: number) => {
         if (itemId) {
             handlePatchSalesOrder(value, itemId)
         } else {
             handleAddSalesOrder(value)
         }
-    }
-
-    const [currentValue, setCurrentValue] = useState(value)
+    }, 300)
 
     useEffect(() => {
         setCurrentValue(value)
@@ -106,15 +108,17 @@ export const SalesOrderCell: React.FC<Props> = ({
         handleItemMutation(value)
     }
 
+    const userRole = useAppSelector(selectUser)?.role
+    const isWorker = userRole === 'worker'
+
     return (
         <div className='w-20'>
-            <DebounceInput
-                element={Input as any}
+            <Input
+                disabled={isWorker && name === 'priority'}
                 value={currentValue}
                 type='number'
                 inputMode='numeric'
                 placeholder='0'
-                debounceTimeout={400}
                 onChange={onValueChange}
             />
         </div>

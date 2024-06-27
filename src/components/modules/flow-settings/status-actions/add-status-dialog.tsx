@@ -29,14 +29,14 @@ import { useAddStageMutation } from '@/store/api/stages/stages'
 import type { StagesAddData, StagesData } from '@/store/api/stages/stages.types'
 import { stopPropagation } from '@/utils/stop-events'
 
-interface Props {
+interface AddStatusDialogProps {
     flowId: number
     statuses: StagesData[]
 }
 
 type FormData = zodInfer<typeof stageSchema>
 
-export const AddStatusDialog: React.FC<Props> = ({ flowId }) => {
+export const AddStatusDialog: React.FC<AddStatusDialogProps> = ({ flowId }) => {
     const form = useCustomForm(stageSchema, { name: '', description: '' })
 
     const [open, setOpen] = useState(false)

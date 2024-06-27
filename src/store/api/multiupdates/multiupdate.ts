@@ -70,7 +70,7 @@ export const multiupdate = api.injectEndpoints({
             }),
             async onQueryStarted({ ...data }, { dispatch, queryFulfilled }) {
                 const patchResult = dispatch(
-                    embs.util.updateQueryData('getOrders', {} as any, (draft) => {
+                    embs.util.updateQueryData('getOrders', {}, (draft) => {
                         const originOrdersIds = data.origin_orders
 
                         const items = draft.results.filter((item) => {

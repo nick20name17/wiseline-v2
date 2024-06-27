@@ -3,11 +3,11 @@ import React from 'react'
 import { SideBar } from './sidebar'
 import { UserMenu } from './user-menu'
 
-interface Props {
+interface HeaderProps {
     title: string
 }
 
-export const Header: React.FC<Props> = ({ title }) => (
+export const Header: React.FC<HeaderProps> = ({ title }) => (
     <header className='relative border-b border-b-input'>
         <div className='py-5'>
             <div className='flex items-center justify-between gap-4'>

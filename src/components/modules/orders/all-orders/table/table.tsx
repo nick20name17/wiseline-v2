@@ -66,7 +66,6 @@ export const OrdersTable = <_, TValue>({
     )
 
     const table = useReactTable({
-        getSubRows: (originalRow) => (originalRow as any)?.origin_items || [],
         getCoreRowModel: getCoreRowModel(),
         onPaginationChange: setPagination,
         getPaginationRowModel: getPaginationRowModel(),

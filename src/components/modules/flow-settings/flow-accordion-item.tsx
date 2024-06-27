@@ -35,7 +35,7 @@ import type { FlowsData } from '@/store/api/flows/flows.types'
 import { useGetStagesQuery, usePatchStageMutation } from '@/store/api/stages/stages'
 import type { StagesData, StagesPatchData } from '@/store/api/stages/stages.types'
 
-interface Props {
+interface FlowAccordionItemProps {
     flow: FlowsData
 }
 
@@ -43,7 +43,7 @@ interface SortableCardProps {
     stage: StagesData
 }
 
-export const FlowAccordionItem: React.FC<Props> = ({ flow }) => {
+export const FlowAccordionItem: React.FC<FlowAccordionItemProps> = ({ flow }) => {
     const [patchStage] = usePatchStageMutation()
 
     const { data } = useGetStagesQuery({ flow: flow.id })

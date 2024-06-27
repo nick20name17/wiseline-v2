@@ -29,7 +29,7 @@ import { usePatchStageMutation } from '@/store/api/stages/stages'
 import type { StagesPatchData } from '@/store/api/stages/stages.types'
 import { stopPropagation } from '@/utils/stop-events'
 
-interface Props {
+interface EditStatusDialogProps {
     id: number
     name: string
     description: string
@@ -38,7 +38,12 @@ interface Props {
 
 type FormData = zodInfer<typeof stageSchema>
 
-export const EditStatusDialog: React.FC<Props> = ({ id, name, description, color }) => {
+export const EditStatusDialog: React.FC<EditStatusDialogProps> = ({
+    id,
+    name,
+    description,
+    color
+}) => {
     const form = useCustomForm(stageSchema, { name, description: description || '' })
 
     const [open, setOpen] = useState(false)

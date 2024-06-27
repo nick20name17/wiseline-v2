@@ -36,11 +36,11 @@ import { isErrorWithMessage, stopPropagation } from '@/utils'
 
 type FormData = zodInfer<typeof userSchema>
 
-interface Props {
+interface EditUserDialogProps {
     user: UserData
 }
 
-export const EditUserDialog: React.FC<Props> = ({ user }) => {
+export const EditUserDialog: React.FC<EditUserDialogProps> = ({ user }) => {
     const { first_name, id, last_name } = user
 
     const userName = `${first_name} ${last_name}`

@@ -71,7 +71,7 @@ export const comments = api.injectEndpoints({
                                         Math.random() * 1000
                                     ).toString(),
                                     flow: {
-                                        id: '' as any,
+                                        id: Math.floor(Math.random() * 1000),
                                         name: '',
                                         stages: []
                                     },
@@ -138,7 +138,7 @@ export const comments = api.injectEndpoints({
                                         Math.random() * 1000
                                     ).toString(),
                                     flow: {
-                                        id: '' as any,
+                                        id: Math.floor(Math.random() * 1000),
                                         name: '',
                                         stages: []
                                     },

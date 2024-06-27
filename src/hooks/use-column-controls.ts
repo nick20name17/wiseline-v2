@@ -1,7 +1,6 @@
-import type { ColumnDef, VisibilityState } from '@tanstack/react-table'
-import type { Table } from '@tanstack/react-table'
-import { useEffect, useState } from 'react'
+import type { ColumnDef, Table, VisibilityState } from '@tanstack/react-table'
 import type { DragEvent } from 'react'
+import { useEffect, useState } from 'react'
 
 import type { UsersProfileData } from '@/store/api/profiles/profiles.types'
 
@@ -30,10 +29,10 @@ export const useColumnOrder = (
     }
 }
 
-export const useColumnVisibility = (
+export const useColumnVisibility = <TData, TValue>(
     usersProfilesData: UsersProfileData[],
     page: 'items' | 'orders',
-    columns: ColumnDef<any, any>[]
+    columns: ColumnDef<TData, TValue>[]
 ) => {
     const defaultColumnVisibility = usersProfilesData
         ?.filter((profile) => profile.page === page)
@@ -77,7 +76,7 @@ export function useColumnDragDrop<T>(table: Table<T>, page: string, handleFuncti
     const onDrop = (e: DragEvent<HTMLElement>) => {
         e.preventDefault()
         const newPosition = Number(e.currentTarget.dataset.columnIndex)
-        const currentCols = table.getVisibleLeafColumns().map((c: any) => c.id)
+        const currentCols = table.getVisibleLeafColumns().map((c) => c.id)
         const colToBeMoved = currentCols.splice(columnBeingDragged, 1)
 
         currentCols.splice(newPosition, 0, colToBeMoved[0])
