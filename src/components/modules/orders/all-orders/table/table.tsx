@@ -13,9 +13,7 @@ import { Pagination } from '../../controls/pagination'
 import { Statuses } from '../../controls/statuses'
 import { SubTable } from '../sub-table/sub-table'
 
-import { columns } from './columns'
-import { TableSkeleton } from './table-skeleton'
-import { SearchBar } from '@/components/shared'
+import { SearchBar, TableSkeleton } from '@/components/shared'
 import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
@@ -32,20 +30,23 @@ import {
     useColumnOrder,
     useColumnVisibility
 } from '@/hooks/use-column-controls'
+import type { OrdersData } from '@/store/api/ebms/ebms.types'
 import {
     useAddUsersProfilesMutation,
     useGetUsersProfilesQuery
 } from '@/store/api/profiles/profiles'
+import type { TableProps } from '@/types/table'
 import { stopEvent } from '@/utils'
 
-export const OrdersTable = ({
+export const OrdersTable = <_, TValue>({
     data,
     isFetching,
     isLoading,
     setSorting,
     dataCount,
-    sorting
-}: any) => {
+    sorting,
+    columns
+}: TableProps<OrdersData, TValue>) => {
     const { limit, offset, setPagination } = usePagination()
 
     const { data: usersProfilesData } = useGetUsersProfilesQuery()
@@ -65,7 +66,7 @@ export const OrdersTable = ({
     )
 
     const table = useReactTable({
-        getSubRows: (originalRow) => originalRow?.origin_items as any[],
+        getSubRows: (originalRow) => (originalRow as any)?.origin_items || [],
         getCoreRowModel: getCoreRowModel(),
         onPaginationChange: setPagination,
         getPaginationRowModel: getPaginationRowModel(),
@@ -162,7 +163,7 @@ export const OrdersTable = ({
                         <TableSkeleton cellCount={columns.length} />
                     ) : table.getRowModel().rows?.length ? (
                         table.getRowModel().rows.map((row) => {
-                            const originItems = row.original.origin_items
+                            const originItems = row.original?.origin_items
 
                             return (
                                 <Collapsible

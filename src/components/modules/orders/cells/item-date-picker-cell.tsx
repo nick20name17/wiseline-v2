@@ -16,14 +16,14 @@ import {
     TooltipTrigger
 } from '@/components/ui/tooltip'
 import { cn } from '@/lib/utils'
-import type { OriginItems } from '@/store/api/ebms/ebms.types'
+import type { EBMSItemsData } from '@/store/api/ebms/ebms.types'
 import { useAddItemMutation, usePatchItemMutation } from '@/store/api/items/items'
 import type { ItemsAddData, ItemsPatchData } from '@/store/api/items/items.types'
 import { useGetCompanyProfilesQuery } from '@/store/api/profiles/profiles'
 import { isErrorWithMessage } from '@/utils'
 
 interface ItemDatePickerCellProps {
-    originItem: OriginItems
+    originItem: EBMSItemsData
 }
 
 export const ItemDatePickerCell: React.FC<ItemDatePickerCellProps> = ({ originItem }) => {

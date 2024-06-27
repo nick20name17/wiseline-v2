@@ -1,4 +1,3 @@
-import type { CommentsData } from '../comments/comments.types'
 import type { Flow, Stage } from '../items/items.types'
 import type { SalesOrdersData } from '../sales-orders/sales-orders.types'
 import type { UserComment } from '../users/users.types'
@@ -71,7 +70,7 @@ export interface OrdersData {
     invoice: string
     customer: string
     sales_order: SalesOrdersData
-    origin_items: OriginItems[]
+    origin_items: EBMSItemsData[]
     start_date: string
     end_date: string
     ship_date: string
@@ -86,7 +85,7 @@ export interface OrdersResponse extends Response<OrdersData> {}
 export interface OrdersItemsData {
     id: number
     invoice: string
-    origin_items: OriginItems[]
+    origin_items: EBMSItemsData[]
 }
 
 export interface ItemComment {
@@ -109,29 +108,6 @@ export interface Item {
     comments: ItemComment[]
     stage: Stage | null
 }
-export interface OriginItems {
-    id: string
-    category: string
-    description: string
-    quantity: string
-    shipped: string
-    ship_date: string
-    width: string
-    weight: string
-    length: string
-    bends: string
-    customer: string
-    order: string
-    id_inven: string
-    origin_order: string
-    completed: boolean
-    profile: string
-    color: string
-    item: Item
-    production_date: string
-    priority: number
-    comments: CommentsData[]
-}
 
 export interface OrdersItemsResponse extends Response<OrdersItemsData> {}
 
@@ -139,21 +115,21 @@ export interface EBMSItemsData {
     id: string
     category: string
     description: string
-    quantity: string
-    ship_date?: string
-    width: string
-    completed: boolean
-    profile: string
-    weight: string
-    length: string
-    color: string
-    item: Item | null
-    origin_order: string
-    bends: string
+    quantity: number
+    shipped: number
+    ship_date: string
+    width: number
+    weight: number
+    length: number
+    bends: number
     customer: string
     order: string
     id_inven: string
-    shipped: string
+    origin_order: string
+    completed: boolean
+    profile: boolean
+    color: string
+    item: Item
 }
 
 export interface EBMSItemsResponse extends Response<EBMSItemsData> {}
@@ -194,9 +170,10 @@ export interface EBMSItemsQueryParams extends BaseQueryParams {
     heightd: number
     ship_date: string
     order: string
-    is_scheduled: string | undefined
+    is_scheduled: boolean | undefined
     category: string
     production_date: string
     has_comment: boolean
     flow: string
+    flow_id: string
 }

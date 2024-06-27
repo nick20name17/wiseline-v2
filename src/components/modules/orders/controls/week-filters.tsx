@@ -11,7 +11,7 @@ import type { FormattedDate } from '@/utils/get-work-days'
 
 export const WeekFilters = () => {
     const [category] = useQueryParam('category', StringParam)
-    const [overdue, setOverdue] = useQueryParam('overdue', BooleanParam)
+    const [_, setOverdue] = useQueryParam('overdue', BooleanParam)
     const [scheduled, setScheduled] = useQueryParam('scheduled', BooleanParam)
     const [date, setDate] = useQueryParam('date', StringParam)
 
@@ -24,25 +24,19 @@ export const WeekFilters = () => {
             setScheduled(true)
         }
 
-        setDate(value ? value : null)
-        setOverdue(false)
+        setDate(value || null)
+        setOverdue(null)
     }
 
     useEffect(() => {
-        if (category !== 'All' && !overdue && !date && scheduled) {
-            setDate(workingDays?.[0].date)
-        }
-
-        if (category === 'All') {
+        if (!scheduled || category === 'All') {
             setDate(null)
+        } else {
+            // setDate(date || workingDays[0].date || null)
         }
+    }, [scheduled, date])
 
-        if (overdue) {
-            setDate(null)
-        }
-    }, [scheduled, category, overdue])
-
-    return category !== 'All' ? (
+    return category !== 'All' && scheduled !== undefined ? (
         <div className='flex items-center gap-x-1 gap-y-10 overflow-x-scroll p-0.5 max-[1118px]:w-full'>
             <ToggleGroup
                 key={date!}

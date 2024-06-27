@@ -2,6 +2,7 @@ import type { SortingState } from '@tanstack/react-table'
 import { useEffect, useState } from 'react'
 import { BooleanParam, NumberParam, StringParam, useQueryParam } from 'use-query-params'
 
+import { columns } from './table/columns'
 import { OrdersTable } from './table/table'
 import { useCurrentValue, useWebSocket } from '@/hooks'
 import { useGetOrdersQuery } from '@/store/api/ebms/ebms'
@@ -18,16 +19,13 @@ export const AllOrders = () => {
 
     const [sorting, setSorting] = useState<SortingState>([
         {
-            id: orderingTerm?.replace(/^-/, '') || 'invoice',
-            desc: orderingTerm?.startsWith('-') || false
+            id: orderingTerm?.replace(/^-/, '')! || 'invoice',
+            desc: orderingTerm?.startsWith('-')! || false
         }
     ])
 
     useEffect(() => {
-        const currentSortingTerm = sorting[0]?.desc
-            ? `-${sorting[0]?.id}`
-            : sorting[0]?.id
-        setOrderingTerm(currentSortingTerm)
+        setOrderingTerm(sorting[0]?.desc ? `-${sorting[0]?.id}` : sorting[0]?.id)
     }, [sorting])
 
     const queryParams: Partial<OrdersQueryParams> = {
@@ -52,8 +50,9 @@ export const AllOrders = () => {
 
     return (
         <OrdersTable
-            dataCount={dataCount}
+            dataCount={dataCount || 0}
             data={dataToRender}
+            columns={columns}
             setSorting={setSorting}
             sorting={sorting}
             isLoading={isLoading}

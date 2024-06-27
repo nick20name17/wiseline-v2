@@ -10,7 +10,7 @@ import {
     SelectValue
 } from '@/components/ui/select'
 import type { Item } from '@/store/api/ebms/ebms.types'
-import type { FlowsData } from '@/store/api/flows/flows.types'
+import { useGetFlowsQuery } from '@/store/api/flows/flows'
 import {
     useAddItemMutation,
     useAddOrderItemMutation,
@@ -23,14 +23,17 @@ interface Props {
     item: Item | undefined
     orderId: string
     id: string
-    flowsData: FlowsData[]
 }
 
-export const FlowCell: React.FC<Props> = ({ item, orderId, id, flowsData }) => {
+export const FlowCell: React.FC<Props> = ({ item, orderId, id }) => {
+    const [category] = useQueryParam('category', StringParam)
+    const { data: flowsData } = useGetFlowsQuery({
+        category__prod_type: category!
+    })
+
     const { flow, id: itemId } = item || {}
     const flowId = flow?.id
 
-    const [category] = useQueryParam('category', StringParam)
     const [defalutValue, setDefaultValue] = useState(flowId ? String(flowId) : '')
 
     const [patchItemStatus] = usePatchItemMutation()
@@ -64,7 +67,7 @@ export const FlowCell: React.FC<Props> = ({ item, orderId, id, flowsData }) => {
     }
 
     const onValueChange = (value: string) => {
-        const flowName = flowsData?.find((flow) => flow.id === +value)?.name
+        const flowName = flowsData?.results?.find((flow) => flow.id === +value)?.name
 
         const data = {
             flow: +value,
@@ -95,7 +98,7 @@ export const FlowCell: React.FC<Props> = ({ item, orderId, id, flowsData }) => {
 
     return (
         <Select
-            disabled={!flowsData?.length}
+            disabled={!flowsData?.results?.length}
             defaultValue={defalutValue}
             value={defalutValue}
             onValueChange={onValueChange}>
@@ -103,7 +106,7 @@ export const FlowCell: React.FC<Props> = ({ item, orderId, id, flowsData }) => {
                 <SelectValue placeholder='Select flow' />
             </SelectTrigger>
             <SelectContent>
-                {flowsData?.map((flow) => (
+                {flowsData?.results?.map((flow) => (
                     <SelectItem
                         key={flow.id}
                         value={String(flow.id)}>

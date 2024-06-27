@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { StringParam, useQueryParam } from 'use-query-params'
 
 import {
@@ -13,18 +13,15 @@ import { useGetFlowsQuery } from '@/store/api/flows/flows'
 
 export const FlowFilter = () => {
     const [category] = useQueryParam('category', StringParam)
-    const [_, setFlowId] = useQueryParam('flow', StringParam)
-
-    const [flow, setFLow] = useState('all')
+    const [flow, setFlowId] = useQueryParam('flow', StringParam)
 
     const onValueChange = (value: string) => {
         if (value === 'all') {
             setFlowId(null)
-            setFLow('all')
+
             return
         } else {
             setFlowId(value)
-            setFLow(value)
         }
     }
 
@@ -37,20 +34,27 @@ export const FlowFilter = () => {
     })
 
     useEffect(() => {
-        setFLow('all')
+        setFlowId(flow)
+
+        return () => {
+            setFlowId(null)
+        }
+    }, [flow])
+
+    useEffect(() => {
         setFlowId(null)
     }, [category])
 
     return (
         <Select
-            key={flow + category}
-            defaultValue={flow}
+            key={flow! + category}
+            defaultValue={flow || 'all'}
             disabled={isLoading || isFetching || !flowsData?.results?.length}
             onValueChange={onValueChange}>
             <SelectTrigger
                 className={cn(
                     '!w-40 text-left font-medium',
-                    flow !== 'all' ? 'border-primary text-primary' : ''
+                    flow ? 'border-primary text-primary' : ''
                 )}>
                 <SelectValue placeholder='Select flow' />
             </SelectTrigger>

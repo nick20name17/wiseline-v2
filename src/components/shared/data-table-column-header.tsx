@@ -18,7 +18,7 @@ export const DataTableColumnHeader = <TData, TValue>({
             disabled={groupedView!}
             variant='ghost'
             className={cn(
-                '!flex w-full items-center !justify-between gap-x-2',
+                '!flex w-full items-center !justify-between gap-x-2 px-2',
                 className
             )}
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>

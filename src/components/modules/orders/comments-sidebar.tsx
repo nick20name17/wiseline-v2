@@ -31,13 +31,13 @@ import {
     useAddItemCommentMutation,
     useAddOrderCommentMutation
 } from '@/store/api/comments/comments'
-import type { OriginItems } from '@/store/api/ebms/ebms.types'
+import type { EBMSItemsData } from '@/store/api/ebms/ebms.types'
 import { useAppSelector } from '@/store/hooks/hooks'
 import { selectUser } from '@/store/slices/auth'
 import { getUpperCaseInitials } from '@/utils'
 
 interface CommentsSidebarProps {
-    originItem: OriginItems
+    originItem: EBMSItemsData
 }
 type FormData = zodInfer<typeof commentSchema>
 

@@ -22,7 +22,7 @@ export const Statuses = () => {
 
     return (
         <Tabs
-            key={category}
+            key={category! + scheduled!}
             onValueChange={onValueChange}
             defaultValue={getDefaultValue()}>
             <TabsList className='bg-secondary'>

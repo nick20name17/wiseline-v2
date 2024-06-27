@@ -19,7 +19,7 @@ import {
 import type { UserData } from '@/store/api/users/users.types'
 import type { BaseTableProps } from '@/types/table'
 
-export function UsersTable<TValue>({
+export function UsersTable<_, TValue>({
     columns,
     data,
     isLoading

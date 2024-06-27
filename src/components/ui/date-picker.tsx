@@ -27,7 +27,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                     disabled={disabled}
                     variant={'outline'}
                     className={cn(
-                        'w-40 justify-start text-left font-normal',
+                        'w-40 flex-1 justify-start text-left font-normal',
                         !date && 'text-muted-foreground'
                     )}>
                     <CalendarIcon className='mr-2 h-4 w-4' />

@@ -4,6 +4,7 @@ import { ChevronDown } from 'lucide-react'
 import { OrderDatePickerCell } from '../../cells/order-date-picker-cell'
 import { ShipDatePickerCell } from '../../cells/ship-date-picker'
 import { SalesOrderCell } from '../cells/sales-order-cell'
+import { MultipatchPopover } from '../multipatch-popover'
 
 import { DataTableColumnHeader } from '@/components/shared'
 import { Button } from '@/components/ui/button'
@@ -29,7 +30,7 @@ export const columns: ColumnDef<OrdersData>[] = [
                         }
                         aria-label='Select all'
                     />
-                    {/* <MultipatchPopover table={table} /> */}
+                    <MultipatchPopover table={table} />
                 </div>
             )
         },
@@ -165,7 +166,7 @@ export const columns: ColumnDef<OrdersData>[] = [
             />
         ),
         cell: ({ row }) => (
-            <div className='w-32 text-center text-xs'>{row.original.c_city || '-'}</div>
+            <div className='w-32 text-center'>{row.original.c_city || '-'}</div>
         )
     },
     {

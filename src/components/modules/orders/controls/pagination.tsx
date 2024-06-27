@@ -34,6 +34,7 @@ export function Pagination<TData>({ table, page, isDataLoading }: Props<TData>) 
     const [category] = useQueryParam('category', StringParam)
     const [offset, setOffset] = useQueryParam('offset', NumberParam)
     const [limit, setLimit] = useQueryParam('limit', NumberParam)
+    const [grouped = true, setGrouped] = useQueryParam('grouped', BooleanParam)
 
     useEffect(() => {
         setOffset(
@@ -48,8 +49,6 @@ export function Pagination<TData>({ table, page, isDataLoading }: Props<TData>) 
     useEffect(() => {
         setLimit(table.getState().pagination.pageSize)
     }, [table.getState().pagination.pageSize, limit])
-
-    const [grouped = true, setGrouped] = useQueryParam('grouped', BooleanParam)
 
     const [visibleColumns, setVisibleColumns] = useState<string[]>([])
 
@@ -72,9 +71,7 @@ export function Pagination<TData>({ table, page, isDataLoading }: Props<TData>) 
 
     const isPageCount = !table.getPageCount()
 
-    const handleSetGrouped = (value: boolean) => {
-        setGrouped(value)
-    }
+    const handleSetGrouped = (value: boolean) => setGrouped(value)
 
     // useEffect(() => {
     //     table.setPageIndex(0)
@@ -93,6 +90,10 @@ export function Pagination<TData>({ table, page, isDataLoading }: Props<TData>) 
             setVisibleColumns(tableColumns)
         }
     }, [usersProfilesData])
+
+    useEffect(() => {
+        setGrouped(category === 'All' ? null : grouped)
+    }, [grouped, category])
 
     return (
         <div className='flex items-center gap-3 py-2'>
