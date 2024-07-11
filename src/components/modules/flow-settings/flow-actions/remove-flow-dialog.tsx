@@ -51,6 +51,7 @@ export const RemoveFlowDialog: React.FC<RemoveFlowDialogProps> = ({ id, name }) 
                     </DialogTitle>
                 </DialogHeader>
                 <Button
+                    disabled={isLoading}
                     onClick={(e) => {
                         e.stopPropagation()
                         handleRemoveFlow(id)

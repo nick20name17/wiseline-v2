@@ -29,7 +29,10 @@ export const Items = () => {
     ])
 
     useEffect(() => {
-        setOrderingTerm(sorting[0]?.desc ? `-${sorting[0]?.id}` : sorting[0]?.id)
+        const currentSortingTerms = sorting
+            ?.map((sort) => (sort.desc ? `-${sort.id}` : sort.id))
+            .join(',')
+        setOrderingTerm(currentSortingTerms)
     }, [sorting])
 
     useEffect(() => {
@@ -47,7 +50,7 @@ export const Items = () => {
         search: searchTerm!,
         flow_id: flowId!,
         is_scheduled: scheduled!,
-        category: category!,
+        category: category === 'All' ? null : category!,
         completed: completed!,
         over_due: overdue!
     }

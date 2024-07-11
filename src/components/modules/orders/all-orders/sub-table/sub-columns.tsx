@@ -1,21 +1,10 @@
 import type { ColumnDef } from '@tanstack/react-table'
 
 import { FlowCell } from '../../cells/flow-cell'
-import { InputCell } from '../../cells/input-cell'
 import { ItemDatePickerCell } from '../../cells/item-date-picker-cell'
 import { StatusCell } from '../../cells/status-cell'
-import { TimePickerCell } from '../../cells/time-picker-cell'
 import { CommentsSidebar } from '../../comments-sidebar'
-import {
-    dateFn,
-    flowFn,
-    notesFn,
-    packagesFn,
-    priorityFn,
-    statusFn,
-    timeFn,
-    widthLengthFn
-} from '../../utils/sorting'
+import { dateFn, flowFn, notesFn, statusFn, widthLengthFn } from '../../utils/sorting'
 
 import { DataTableColumnHeader } from '@/components/shared'
 import { Button } from '@/components/ui/button'
@@ -73,72 +62,6 @@ export const subColumns: ColumnDef<EBMSItemsData>[] = [
         )
     },
     {
-        accessorKey: 'priority',
-        header: ({ column }) => (
-            <DataTableColumnHeader
-                column={column}
-                title='Prio.'
-                className='!w-20'
-            />
-        ),
-        sortingFn: priorityFn,
-        cell: ({ row }) => (
-            <InputCell
-                name='priority'
-                value={row.original?.item?.priority!}
-                itemId={row.original?.item?.id}
-                orderId={row.original?.origin_order}
-                order={row.original.order!}
-                originItemId={row.original?.id}
-            />
-        ),
-        accessorFn: (row) => row.item?.priority
-    },
-    {
-        accessorKey: 'packages',
-        header: ({ column }) => (
-            <DataTableColumnHeader
-                column={column}
-                title='Pckgs'
-                className='!w-20'
-            />
-        ),
-        sortingFn: packagesFn,
-        cell: ({ row }) => (
-            <InputCell
-                key={row.original?.id}
-                name='packages'
-                value={row.original?.item?.packages!}
-                itemId={row.original?.item?.id}
-                orderId={row.original.origin_order}
-                order={row.original.order!}
-                originItemId={row.original?.id}
-            />
-        )
-    },
-    {
-        accessorKey: 'location',
-        sortingFn: packagesFn,
-        header: ({ column }) => (
-            <DataTableColumnHeader
-                column={column}
-                title='Loc.'
-                className='!w-20'
-            />
-        ),
-        cell: ({ row }) => (
-            <InputCell
-                key={row.original?.id}
-                name='location'
-                value={row.original?.item?.location!}
-                itemId={row.original?.item?.id}
-                orderId={row.original.origin_order}
-                order={row.original.order!}
-                originItemId={row.original?.id}
-            />
-        )
-    },
-    {
         accessorKey: 'production_date',
         sortingFn: dateFn,
         header: ({ column }) => (
@@ -155,27 +78,7 @@ export const subColumns: ColumnDef<EBMSItemsData>[] = [
             />
         )
     },
-    {
-        accessorKey: 'time',
-        sortingFn: timeFn,
-        header: ({ column }) => (
-            <DataTableColumnHeader
-                column={column}
-                title='Time'
-                className='!w-24'
-            />
-        ),
-        cell: ({ row }) => {
-            return (
-                <TimePickerCell
-                    item={row?.original?.item}
-                    originItemId={row.original?.id}
-                    isDisabled={row.original.completed}
-                    orderId={row.original?.origin_order}
-                />
-            )
-        }
-    },
+
     {
         accessorKey: 'quantity',
         header: ({ column }) => (

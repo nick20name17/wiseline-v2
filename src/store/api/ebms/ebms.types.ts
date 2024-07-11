@@ -145,6 +145,8 @@ export interface OrdersQueryParams extends BaseQueryParams {
     completed: boolean | null
     search: string | null
     ordering: string
+    stage_id: number | null
+    flow_id: number | null
 }
 
 export interface OrderQueryParams extends BaseQueryParams {
@@ -171,7 +173,7 @@ export interface EBMSItemsQueryParams extends BaseQueryParams {
     ship_date: string
     order: string
     is_scheduled: boolean | undefined
-    category: string
+    category: string | null
     production_date: string
     has_comment: boolean
     flow: string

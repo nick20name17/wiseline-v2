@@ -41,7 +41,7 @@ export const useWebSocket = <T extends UseWebsocketProps>({
 
     useEffect(() => {
         const websocket = new WebSocket(
-            `wss://api.dev-ebms.fun/ws/${endpoint}/`,
+            `wss://api.wiseline.app/ws/${endpoint}/`,
             token.access
         )
 

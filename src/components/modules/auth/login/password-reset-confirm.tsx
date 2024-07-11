@@ -110,6 +110,7 @@ export const PasswordResetConfirm = () => {
                     />
 
                     <Button
+                        disabled={isLoading}
                         className='w-full'
                         type='submit'>
                         {isLoading ? (

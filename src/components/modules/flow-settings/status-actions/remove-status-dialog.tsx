@@ -50,6 +50,7 @@ export const RemoveStatusDialog: React.FC<RemoveStatusDialogProps> = ({ id, name
                     </DialogTitle>
                 </DialogHeader>
                 <Button
+                    disabled={isLoading}
                     onClick={(e) => {
                         e.stopPropagation()
                         handleRemoveStage(id)

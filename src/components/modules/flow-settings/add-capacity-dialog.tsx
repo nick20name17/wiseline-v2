@@ -124,6 +124,7 @@ export const AddCapacityDialog: React.FC<AddCapacityDialogProps> = ({
                         />
 
                         <Button
+                            disabled={isLoading || isPatching}
                             className='w-full'
                             type='submit'>
                             {isLoading || isPatching ? (

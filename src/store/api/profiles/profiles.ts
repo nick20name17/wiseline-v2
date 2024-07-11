@@ -52,7 +52,7 @@ export const users = api.injectEndpoints({
         }),
         removeUserProfiles: build.mutation<void, void>({
             query: () => ({
-                url: 'profiles/users/',
+                url: 'profiles/user',
                 method: 'DELETE'
             }),
             invalidatesTags: ['UsersProfile']

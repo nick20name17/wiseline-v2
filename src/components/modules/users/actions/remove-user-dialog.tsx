@@ -69,7 +69,7 @@ export const RemoveUserDialog: React.FC<RemoveUserDialogProps> = ({ user }) => {
                     </DialogTitle>
                 </DialogHeader>
                 <Button
-                    // disabled={isDisabled}
+                    disabled={isLoading}
                     onClick={(e) => {
                         e.stopPropagation()
                         handleRemoveUser(userId)

@@ -1,3 +1,6 @@
+import { useIsSticky } from './use-is-sticky'
+import { useMatchMedia } from './use-match-media'
+import { useTableScroll } from './use-table-scroll'
 import { useCallbackDebounce } from '@/hooks/use-callback-debounce'
 import { useColumnDragDrop, useColumnVisibility } from '@/hooks/use-column-controls'
 import { useCurrentValue } from '@/hooks/use-current-value'
@@ -12,7 +15,10 @@ export {
     useColumnVisibility,
     useCurrentValue,
     useCustomForm,
+    useIsSticky,
+    useMatchMedia,
     usePageName,
     usePagination,
+    useTableScroll,
     useWebSocket
 }

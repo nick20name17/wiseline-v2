@@ -6,14 +6,15 @@ import type {
     StagesQueryParams,
     StagesResponse
 } from './stages.types'
+import { getQueryParamString } from '@/utils'
 
 export const stage = api.injectEndpoints({
     endpoints: (build) => ({
         getStages: build.query<StagesResponse, Partial<StagesQueryParams>>({
-            query: (params) => ({
-                url: 'stages/',
-                params
-            }),
+            query: (params) => {
+                const queryParamString = getQueryParamString(params)
+                return `stages/?${queryParamString}`
+            },
             providesTags: ['Stage']
         }),
         addStage: build.mutation<void, StagesAddData>({

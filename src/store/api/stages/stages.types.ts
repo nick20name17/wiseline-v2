@@ -12,7 +12,7 @@ export interface StagesData {
 
 export interface StagesQueryParams extends BaseQueryParams {
     position: number
-    flow: number
+    flow: number | null
     search: string
     ordering: string
 }

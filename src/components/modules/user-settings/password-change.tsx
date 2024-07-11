@@ -120,6 +120,7 @@ export const PasswordChange = () => {
                         />
 
                         <Button
+                            disabled={isLoading}
                             onClick={stopPropagation}
                             className='w-full'
                             type='submit'>

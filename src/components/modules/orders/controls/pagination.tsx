@@ -1,9 +1,8 @@
 import type { Table } from '@tanstack/react-table'
 import { ArrowLeft, ArrowRight, SkipBack, SkipForward } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { BooleanParam, NumberParam, StringParam, useQueryParam } from 'use-query-params'
+import { NumberParam, useQueryParam } from 'use-query-params'
 
-import { FlowFilter } from './flow-filter'
 import { Button } from '@/components/ui/button'
 import {
     DropdownMenu,
@@ -18,7 +17,7 @@ import {
     SelectTrigger,
     SelectValue
 } from '@/components/ui/select'
-import { Toggle } from '@/components/ui/toggle'
+import { tableConfig } from '@/config/table'
 import {
     useAddUsersProfilesMutation,
     useGetUsersProfilesQuery
@@ -35,10 +34,14 @@ export function Pagination<TData>({
     page,
     isDataLoading
 }: PaginationProps<TData>) {
-    const [category] = useQueryParam('category', StringParam)
-    const [offset, setOffset] = useQueryParam('offset', NumberParam)
-    const [limit, setLimit] = useQueryParam('limit', NumberParam)
-    const [grouped = true, setGrouped] = useQueryParam('grouped', BooleanParam)
+    const [offset = tableConfig.pagination.pageIndex, setOffset] = useQueryParam(
+        'offset',
+        NumberParam
+    )
+    const [limit = tableConfig.pagination.pageSize, setLimit] = useQueryParam(
+        'limit',
+        NumberParam
+    )
 
     useEffect(() => {
         setOffset(
@@ -75,7 +78,7 @@ export function Pagination<TData>({
 
     const isPageCount = !table.getPageCount()
 
-    const handleSetGrouped = (value: boolean) => setGrouped(value)
+    // const handleSetGrouped = (value: boolean) => setGrouped(value)
 
     // useEffect(() => {
     //     table.setPageIndex(0)
@@ -95,12 +98,10 @@ export function Pagination<TData>({
         }
     }, [usersProfilesData])
 
-    useEffect(() => {
-        setGrouped(category === 'All' ? null : grouped)
-    }, [grouped, category])
-
     return (
-        <div className='flex items-center gap-3 py-2'>
+        <div
+            className='mt-2 flex items-center justify-between gap-3'
+            id='order-pagination'>
             <div className='flex items-center space-x-2'>
                 <p className='text-sm font-medium'>Rows per page</p>
                 <Select
@@ -115,7 +116,7 @@ export function Pagination<TData>({
                         />
                     </SelectTrigger>
                     <SelectContent side='top'>
-                        {[10, 20, 30, 40, 50].map((pageSize) => (
+                        {[20, 40, 60, 80, 100].map((pageSize) => (
                             <SelectItem
                                 key={pageSize}
                                 value={`${pageSize}`}>
@@ -125,96 +126,89 @@ export function Pagination<TData>({
                     </SelectContent>
                 </Select>
             </div>
-            <div className='flex w-[105px] items-center justify-center text-left text-sm font-medium'>
-                Page {table.getState().pagination.pageIndex + 1} of{' '}
-                {table.getPageCount() || 0}
-            </div>
+            <div className='flex items-center gap-4'>
+                <div className='flex w-[105px] items-center justify-center text-left text-sm font-medium'>
+                    Page {table.getState().pagination.pageIndex + 1} of{' '}
+                    {table.getPageCount() || 0}
+                </div>
 
-            <div className='flex items-center space-x-2'>
-                <Button
-                    variant='outline'
-                    className='flex h-8 w-8 p-0'
-                    onClick={() => table.setPageIndex(0)}
-                    disabled={
-                        !table.getCanPreviousPage() || isPageCount || isDataLoading
-                    }>
-                    <span className='sr-only'>Go to first page</span>
-                    <SkipBack className='h-4 w-4' />
-                </Button>
-                <Button
-                    variant='outline'
-                    className='h-8 w-8 p-0'
-                    onClick={() => table.previousPage()}
-                    disabled={
-                        !table.getCanPreviousPage() || isPageCount || isDataLoading
-                    }>
-                    <span className='sr-only'>Go to previous page</span>
-                    <ArrowLeft className='h-4 w-4' />
-                </Button>
-                <Button
-                    variant='outline'
-                    className='h-8 w-8 p-0'
-                    onClick={() => table.nextPage()}
-                    disabled={!table.getCanNextPage() || isPageCount || isDataLoading}>
-                    <span className='sr-only'>Go to next page</span>
-                    <ArrowRight className='h-4 w-4' />
-                </Button>
-                <Button
-                    variant='outline'
-                    className='flex h-8 w-8 p-0'
-                    onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                    disabled={!table.getCanNextPage() || isPageCount || isDataLoading}>
-                    <span className='sr-only'>Go to last page</span>
-                    <SkipForward className='h-4 w-4' />
-                </Button>
-            </div>
-
-            <DropdownMenu>
-                <DropdownMenuTrigger asChild>
+                <div className='flex items-center space-x-2'>
                     <Button
-                        disabled={isDataLoading}
                         variant='outline'
-                        className='ml-auto'>
-                        Columns
+                        className='flex h-8 w-8 p-0'
+                        onClick={() => table.setPageIndex(0)}
+                        disabled={
+                            !table.getCanPreviousPage() || isPageCount || isDataLoading
+                        }>
+                        <span className='sr-only'>Go to first page</span>
+                        <SkipBack className='h-4 w-4' />
                     </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align='end'>
-                    {table
-                        .getAllColumns()
-                        .filter((column) => column.getCanHide())
-                        .filter(
-                            (column) =>
-                                column.id !== 'production_date' &&
-                                column.id !== 'flow' &&
-                                column.id !== 'status'
-                        )
-                        .map((column) => (
-                            <DropdownMenuCheckboxItem
-                                key={column.id}
-                                className='capitalize'
-                                checked={column.getIsVisible()}
-                                onCheckedChange={(value) => {
-                                    column.toggleVisibility(!!value)
-                                    onCheckedChange(column.id, !!value)
-                                }}>
-                                {column.id.replace(/c_/g, '').replace(/_/g, ' ')}
-                            </DropdownMenuCheckboxItem>
-                        ))}
-                </DropdownMenuContent>
-            </DropdownMenu>
+                    <Button
+                        variant='outline'
+                        className='h-8 w-8 p-0'
+                        onClick={() => table.previousPage()}
+                        disabled={
+                            !table.getCanPreviousPage() || isPageCount || isDataLoading
+                        }>
+                        <span className='sr-only'>Go to previous page</span>
+                        <ArrowLeft className='h-4 w-4' />
+                    </Button>
+                    <Button
+                        variant='outline'
+                        className='h-8 w-8 p-0'
+                        onClick={() => table.nextPage()}
+                        disabled={
+                            !table.getCanNextPage() || isPageCount || isDataLoading
+                        }>
+                        <span className='sr-only'>Go to next page</span>
+                        <ArrowRight className='h-4 w-4' />
+                    </Button>
+                    <Button
+                        variant='outline'
+                        className='flex h-8 w-8 p-0'
+                        onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                        disabled={
+                            !table.getCanNextPage() || isPageCount || isDataLoading
+                        }>
+                        <span className='sr-only'>Go to last page</span>
+                        <SkipForward className='h-4 w-4' />
+                    </Button>
+                </div>
 
-            {category !== 'All' ? <FlowFilter /> : null}
-
-            {category !== 'All' ? (
-                <Toggle
-                    pressed={grouped!}
-                    onPressedChange={handleSetGrouped}
-                    className='data=[state=on]:border data-[state=on]:border-primary data-[state=on]:bg-background data-[state=on]:text-primary'
-                    variant='outline'
-                    aria-label='Toggle grouped'>
-                    Grouped
-                </Toggle>
-            ) : null}
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button
+                            disabled={isDataLoading}
+                            variant='outline'
+                            className='ml-auto'>
+                            Columns
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align='end'>
+                        {table
+                            .getAllColumns()
+                            .filter((column) => column.getCanHide())
+                            .filter(
+                                (column) =>
+                                    column.id !== 'production_date' &&
+                                    column.id !== 'flow' &&
+                                    column.id !== 'status'
+                            )
+                            .map((column) => (
+                                <DropdownMenuCheckboxItem
+                                    key={column.id}
+                                    className='capitalize'
+                                    checked={column.getIsVisible()}
+                                    onCheckedChange={(value) => {
+                                        column.toggleVisibility(!!value)
+                                        onCheckedChange(column.id, !!value)
+                                    }}>
+                                    {column.id.replace(/c_/g, '').replace(/_/g, ' ')}
+                                </DropdownMenuCheckboxItem>
+                            ))}
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </div>
         </div>
     )
 }

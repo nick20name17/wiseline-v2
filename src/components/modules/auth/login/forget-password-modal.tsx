@@ -101,6 +101,7 @@ export const ForgetPasswordModal: React.FC<ForgetPasswordModalProps> = ({ disabl
                         />
 
                         <Button
+                            disabled={isLoading}
                             className='w-full'
                             type='submit'>
                             {isLoading ? (

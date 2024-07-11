@@ -3,7 +3,7 @@ import type { UsersProfileData } from '../profiles/profiles.types'
 
 import type { PatchData, Response } from '@/types/api'
 
-export type UserRoles = 'admin' | 'worker' | 'manager'
+export type UserRoles = 'admin' | 'worker' | 'manager' | 'client'
 
 export interface UserData {
     id: number

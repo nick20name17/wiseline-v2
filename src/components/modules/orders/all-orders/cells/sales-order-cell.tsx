@@ -14,7 +14,7 @@ import { capitalize } from '@/utils/capitalize'
 import { isErrorWithMessage } from '@/utils/is-error-with-message'
 
 interface Props {
-    name: 'priority' | 'packages' | 'location'
+    name: 'packages' | 'location'
     value: number
     orderId: string
     itemId: number | undefined
@@ -109,14 +109,15 @@ export const SalesOrderCell: React.FC<Props> = ({
     }
 
     const userRole = useAppSelector(selectUser)?.role
-    const isWorker = userRole === 'worker'
+    const isWorkerOrUser = userRole === 'worker' || userRole === 'client'
 
     return (
         <div className='w-20'>
             <Input
-                disabled={isWorker && name === 'priority'}
+                disabled={isWorkerOrUser}
                 value={currentValue}
                 type='number'
+                min={0}
                 inputMode='numeric'
                 placeholder='0'
                 onChange={onValueChange}

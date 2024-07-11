@@ -66,3 +66,8 @@ export const userSchema = object({
         required_error: 'Please select an role'
     })
 })
+
+export const prioritySchema = object({
+    name: string().min(1, 'Priority name is required'),
+    position: string().min(1, 'Priority number is required')
+})

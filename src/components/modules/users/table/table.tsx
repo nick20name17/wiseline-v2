@@ -1,7 +1,6 @@
 import {
     flexRender,
     getCoreRowModel,
-    getPaginationRowModel,
     getSortedRowModel,
     useReactTable
 } from '@tanstack/react-table'
@@ -28,9 +27,9 @@ export function UsersTable<_, TValue>({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
-        enableHiding: true
+        enableHiding: true,
+        enableMultiSort: true
     })
 
     const [searchTerm = ''] = useQueryParam('search', StringParam)

@@ -6,14 +6,14 @@ import {
     getSortedRowModel,
     useReactTable
 } from '@tanstack/react-table'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { BooleanParam, StringParam, useQueryParam } from 'use-query-params'
 
 import { Pagination } from '../../controls/pagination'
-import { Statuses } from '../../controls/statuses'
 import { SubTable } from '../sub-table/sub-table'
 
-import { SearchBar, TableSkeleton } from '@/components/shared'
+import { TableControls } from './table-controls'
+import { TableSkeleton } from '@/components/shared'
 import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
@@ -24,7 +24,7 @@ import {
     TableHeader,
     TableRow
 } from '@/components/ui/table'
-import { usePagination } from '@/hooks'
+import { useMatchMedia, usePagination, useTableScroll } from '@/hooks'
 import {
     useColumnDragDrop,
     useColumnOrder,
@@ -69,14 +69,15 @@ export const OrdersTable = <_, TValue>({
         getCoreRowModel: getCoreRowModel(),
         onPaginationChange: setPagination,
         getPaginationRowModel: getPaginationRowModel(),
-        onSortingChange: setSorting,
         getSortedRowModel: getSortedRowModel(),
         getExpandedRowModel: getExpandedRowModel(),
+        onSortingChange: setSorting,
         data,
         columns,
         manualPagination: true,
         manualSorting: true,
         manualExpanding: true,
+        // enableMultiSort: true,
         pageCount,
         paginateExpandedRows: false,
         autoResetPageIndex: false,
@@ -93,8 +94,6 @@ export const OrdersTable = <_, TValue>({
 
     const { onDragStart, onDrop } = useColumnDragDrop(table, 'orders', addUsersProfiles)
 
-    const colSpan = columns.length + 1
-
     const [overdue] = useQueryParam('overdue', BooleanParam)
     const [completed] = useQueryParam('completed', BooleanParam)
     const [scheduled] = useQueryParam('scheduled', BooleanParam)
@@ -104,22 +103,21 @@ export const OrdersTable = <_, TValue>({
         table.setPageIndex(0)
     }, [overdue, completed, scheduled, searchTerm])
 
+    const { isTablet } = useMatchMedia()
+    const tableRef = useRef<HTMLTableElement>(null)
+
+    useTableScroll({ tableRef, enableScroll: !isTablet })
+
+    const colSpan = columns.length + 1
+
     return (
         <div className='rounded-md'>
-            <div className='flex w-full flex-wrap items-start justify-between gap-5 border-t border-t-input py-2'>
-                <div className='flex flex-wrap items-center justify-between gap-6 max-sm:w-full'>
-                    <Statuses />
-                    <SearchBar />
-                </div>
-                <Pagination
-                    isDataLoading={isFetching || isLoading}
-                    page='orders'
-                    table={table}
-                />
-            </div>
+            <TableControls />
 
-            <Table>
-                <TableHeader>
+            <Table
+                ref={tableRef}
+                containerClassname='h-fit !overflow-y-auto'>
+                <TableHeader className='sticky top-0 z-10 bg-background'>
                     {isLoading ? (
                         <TableRow className='p-0'>
                             <TableCell
@@ -212,6 +210,11 @@ export const OrdersTable = <_, TValue>({
                     )}
                 </TableBody>
             </Table>
+            <Pagination
+                isDataLoading={isFetching || isLoading}
+                page='orders'
+                table={table}
+            />
         </div>
     )
 }

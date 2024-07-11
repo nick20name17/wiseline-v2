@@ -148,6 +148,7 @@ export const EditStatusDialog: React.FC<EditStatusDialogProps> = ({
                         </Tabs>
 
                         <Button
+                            disabled={isLoading}
                             onClick={stopPropagation}
                             className='w-full'
                             type='submit'>

@@ -1,5 +1,5 @@
-import { ArrowUpDown } from 'lucide-react'
-import { BooleanParam, useQueryParam } from 'use-query-params'
+import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react'
+import { BooleanParam, StringParam, useQueryParam } from 'use-query-params'
 
 import { Button } from '../ui/button'
 
@@ -11,21 +11,44 @@ export const DataTableColumnHeader = <TData, TValue>({
     column,
     className
 }: DataTableColumnHeaderProps<TData, TValue>) => {
-    const [groupedView] = useQueryParam('grouped', BooleanParam)
+    const [grouped] = useQueryParam('grouped', BooleanParam)
+    const [view] = useQueryParam('view', StringParam)
 
     return (
         <Button
-            disabled={groupedView!}
+            disabled={grouped!}
             variant='ghost'
             className={cn(
                 '!flex w-full items-center !justify-between gap-x-2 px-2',
                 className
             )}
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+            onClick={column.getToggleSortingHandler()}>
             {title}
-            <ArrowUpDown
-                className={cn('h-4 w-4 flex-shrink-0', false && false ? 'opacity-0' : '')}
-            />
+
+            {column.getIsSorted() ? (
+                column.getIsSorted() === 'asc' ? (
+                    <ArrowUp
+                        className={cn(
+                            'ml-2 h-4 w-4 flex-shrink-0 text-foreground',
+                            grouped && view === 'all-details' ? 'hidden' : ''
+                        )}
+                    />
+                ) : (
+                    <ArrowDown
+                        className={cn(
+                            'ml-2 h-4 w-4 flex-shrink-0 text-foreground',
+                            grouped && view === 'all-details' ? 'hidden' : ''
+                        )}
+                    />
+                )
+            ) : (
+                <ArrowUpDown
+                    className={cn(
+                        'ml-2 h-4 w-4 flex-shrink-0',
+                        grouped && view === 'all-details' ? 'hidden' : ''
+                    )}
+                />
+            )}
         </Button>
     )
 }

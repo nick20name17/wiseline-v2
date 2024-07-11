@@ -184,6 +184,7 @@ export const AddUserDialog = () => {
                         />
 
                         <Button
+                            disabled={isLoading}
                             className='w-full'
                             type='submit'>
                             {isLoading ? (

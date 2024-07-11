@@ -98,6 +98,7 @@ export const EditFlowDialog: React.FC<EditFlowDialogProps> = ({ id, name }) => {
                         />
 
                         <Button
+                            disabled={isLoading}
                             onClick={stopPropagation}
                             className='w-full'
                             type='submit'>

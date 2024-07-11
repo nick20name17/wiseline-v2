@@ -188,8 +188,7 @@ export const EditUserDialog: React.FC<EditUserDialogProps> = ({ user }) => {
                         <Button
                             className='w-full'
                             type='submit'
-                            // disabled={isDisabled}
-                        >
+                            disabled={isLoading}>
                             {isLoading ? (
                                 <Loader2 className='h-4 w-4 animate-spin' />
                             ) : false ? (

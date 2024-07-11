@@ -13,15 +13,13 @@ import { useGetFlowsQuery } from '@/store/api/flows/flows'
 
 export const FlowFilter = () => {
     const [category] = useQueryParam('category', StringParam)
-    const [flow, setFlowId] = useQueryParam('flow', StringParam)
+    const [flow, setFlow] = useQueryParam('flow', StringParam)
 
     const onValueChange = (value: string) => {
         if (value === 'all') {
-            setFlowId(null)
-
-            return
+            setFlow(null)
         } else {
-            setFlowId(value)
+            setFlow(value)
         }
     }
 
@@ -34,18 +32,16 @@ export const FlowFilter = () => {
     })
 
     useEffect(() => {
-        setFlowId(flow)
-
-        return () => {
-            setFlowId(null)
-        }
+        setFlow(flow)
     }, [flow])
 
     useEffect(() => {
-        setFlowId(null)
+        if (category === 'All') {
+            setFlow(null)
+        }
     }, [category])
 
-    return (
+    return category === 'All' ? null : (
         <Select
             key={flow! + category}
             defaultValue={flow || 'all'}

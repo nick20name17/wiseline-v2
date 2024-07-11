@@ -1,4 +1,5 @@
 import {
+    Asterisk,
     Calendar,
     CircleUserRound,
     Cog,
@@ -52,6 +53,11 @@ const navigationItems = [
         icon: Calendar,
         label: 'Calendar',
         link: routes.calendar
+    },
+    {
+        icon: Asterisk,
+        label: 'Priorities',
+        link: routes.priorities
     },
     {
         icon: Gauge,

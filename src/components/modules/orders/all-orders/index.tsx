@@ -15,17 +15,26 @@ export const AllOrders = () => {
     const [searchTerm] = useQueryParam('search', StringParam)
     const [offsetParam] = useQueryParam('offset', NumberParam)
     const [limitParam] = useQueryParam('limit', NumberParam)
+    const [stage] = useQueryParam('stage', StringParam)
+    const [flow] = useQueryParam('flow', StringParam)
     const [orderingTerm, setOrderingTerm] = useQueryParam('ordering', StringParam)
 
     const [sorting, setSorting] = useState<SortingState>([
         {
-            id: orderingTerm?.replace(/^-/, '')! || 'invoice',
-            desc: orderingTerm?.startsWith('-')! || false
+            id: 'priority',
+            desc: true
         }
+        // {
+        //     id: 'invoice',
+        //     desc: false
+        // }
     ])
 
     useEffect(() => {
-        setOrderingTerm(sorting[0]?.desc ? `-${sorting[0]?.id}` : sorting[0]?.id)
+        const currentSortingTerms = sorting
+            ?.map((sort) => (sort.desc ? `-${sort.id}` : sort.id))
+            .join(',')
+        setOrderingTerm(currentSortingTerms || null)
     }, [sorting])
 
     const queryParams: Partial<OrdersQueryParams> = {
@@ -35,7 +44,9 @@ export const AllOrders = () => {
         ordering: orderingTerm!,
         search: searchTerm,
         completed: completed,
-        over_due: overdue!
+        over_due: overdue!,
+        stage_id: stage ? +stage! : null,
+        flow_id: flow ? +flow! : null
     }
 
     const { currentData, isLoading, isFetching, refetch } = useGetOrdersQuery(queryParams)

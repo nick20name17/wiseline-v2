@@ -97,6 +97,7 @@ export const AddFlowDialog: React.FC<AddFlowDialogProps> = ({ categoryId }) => {
                         />
 
                         <Button
+                            disabled={isLoading}
                             onClick={stopPropagation}
                             className='w-full'
                             type='submit'>

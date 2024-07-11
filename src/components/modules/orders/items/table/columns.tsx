@@ -2,10 +2,8 @@ import type { ColumnDef } from '@tanstack/react-table'
 import { BooleanParam, useQueryParam } from 'use-query-params'
 
 import { FlowCell } from '../../cells/flow-cell'
-import { InputCell } from '../../cells/input-cell'
 import { ItemDatePickerCell } from '../../cells/item-date-picker-cell'
 import { StatusCell } from '../../cells/status-cell'
-import { TimePickerCell } from '../../cells/time-picker-cell'
 import { CommentsSidebar } from '../../comments-sidebar'
 import { MultipatchPopover } from '../multipatch-popover'
 
@@ -104,91 +102,6 @@ export const columns: ColumnDef<EBMSItemsData>[] = [
         )
     },
     {
-        accessorKey: 'time',
-        header: ({ column }) => (
-            <DataTableColumnHeader
-                column={column}
-                title='Time'
-                className='!w-24'
-            />
-        ),
-        cell: ({ row }) => {
-            return (
-                <TimePickerCell
-                    // isDisabled={!row.original.item?.flow?.id || row.original.completed}
-                    isDisabled={row.original.completed}
-                    item={row?.original?.item}
-                    originItemId={row.original?.id}
-                    orderId={row.original.origin_order}
-                />
-            )
-        }
-    },
-    {
-        accessorKey: 'priority',
-        header: ({ column }) => (
-            <DataTableColumnHeader
-                column={column}
-                title='Prio.'
-                className='!w-20'
-            />
-        ),
-        cell: ({ row }) => (
-            <InputCell
-                key={row.original?.id}
-                name='priority'
-                value={row.original?.item?.priority!}
-                itemId={row.original?.item?.id}
-                orderId={row.original.origin_order}
-                order={row.original.order!}
-                originItemId={row.original?.id}
-            />
-        ),
-        accessorFn: (row) => row.item?.priority
-    },
-    {
-        accessorKey: 'packages',
-        header: ({ column }) => (
-            <DataTableColumnHeader
-                column={column}
-                title='Pckgs'
-                className='!w-20'
-            />
-        ),
-        cell: ({ row }) => (
-            <InputCell
-                key={row.original?.id}
-                name='packages'
-                value={row.original?.item?.packages!}
-                itemId={row.original?.item?.id}
-                orderId={row.original.origin_order}
-                order={row.original.order!}
-                originItemId={row.original?.id}
-            />
-        )
-    },
-    {
-        accessorKey: 'location',
-        header: ({ column }) => (
-            <DataTableColumnHeader
-                column={column}
-                title='Loc.'
-                className='!w-20'
-            />
-        ),
-        cell: ({ row }) => (
-            <InputCell
-                key={row.original?.id}
-                name='location'
-                value={row.original?.item?.location!}
-                itemId={row.original?.item?.id}
-                orderId={row.original.origin_order}
-                order={row.original.order!}
-                originItemId={row.original?.id}
-            />
-        )
-    },
-    {
         accessorKey: 'quantity',
         header: ({ column }) => (
             <DataTableColumnHeader
@@ -240,14 +153,6 @@ export const columns: ColumnDef<EBMSItemsData>[] = [
             <div className='w-28 text-center'>{row.original.profile || '-'}</div>
         )
     },
-    // {
-    //     accessorKey: 'customer',
-    //     header: ({ column }) =>
-    //         createHeader('Customer', column, 'text-left justify-start !w-64'),
-    //     cell: ({ row }) => (
-    //         <div className='w-64 pl-4'>{getValidValue(row.original.customer)}</div>
-    //     )
-    // },
     {
         accessorKey: 'id_inven',
         header: ({ column }) => (

@@ -2,6 +2,7 @@ import type { ColumnDef } from '@tanstack/react-table'
 import { ChevronDown } from 'lucide-react'
 
 import { OrderDatePickerCell } from '../../cells/order-date-picker-cell'
+import { OrderPriorityCell } from '../../cells/order-priority-cell'
 import { ShipDatePickerCell } from '../../cells/ship-date-picker'
 import { SalesOrderCell } from '../cells/sales-order-cell'
 import { MultipatchPopover } from '../multipatch-popover'
@@ -109,15 +110,46 @@ export const columns: ColumnDef<OrdersData>[] = [
             <DataTableColumnHeader
                 column={column}
                 title='Prio.'
+                className='!w-28'
+            />
+        ),
+        cell: ({ row }) => <OrderPriorityCell order={row.original} />
+    },
+    {
+        accessorKey: 'packages',
+        header: ({ column }) => (
+            <DataTableColumnHeader
+                column={column}
+                title='Pckgs.'
                 className='!w-20'
             />
         ),
         cell: ({ row }) => (
             <SalesOrderCell
                 key={row.original?.id}
-                name='priority'
+                name='packages'
                 invoice={row.original?.invoice!}
-                value={row.original?.sales_order?.priority!}
+                value={row.original?.sales_order?.packages!}
+                itemId={row.original?.sales_order?.id}
+                orderId={row.original.id}
+            />
+        )
+    },
+    {
+        accessorKey: 'location',
+        header: ({ column }) => (
+            <DataTableColumnHeader
+                column={column}
+                title='Loc.'
+                className='!w-20'
+            />
+        ),
+        cell: ({ row }) => (
+            <SalesOrderCell
+                key={row.original?.id}
+                name='location'
+                invoice={row.original?.invoice!}
+                value={row.original?.sales_order?.location!}
                 itemId={row.original?.sales_order?.id}
                 orderId={row.original.id}
             />

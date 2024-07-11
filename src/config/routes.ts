@@ -6,5 +6,6 @@ export const routes = {
     companySettings: '/company-settings',
     passwordResetConfirm: '/password-reset/:uidb64/:token',
     users: '/users',
-    calendar: '/calendar'
+    calendar: '/calendar',
+    priorities: '/priorities'
 } as const

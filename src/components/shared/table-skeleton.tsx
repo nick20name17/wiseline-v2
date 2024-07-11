@@ -1,12 +1,13 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import { TableCell, TableRow } from '@/components/ui/table'
+import { tableConfig } from '@/config/table'
 
 interface TableSkeletonProps {
     cellCount: number
 }
 
 export const TableSkeleton: React.FC<TableSkeletonProps> = ({ cellCount }) => {
-    return Array.from({ length: 10 }).map((_, index) => (
+    return Array.from({ length: tableConfig.pagination.pageSize }).map((_, index) => (
         <TableRow
             className='p-0'
             key={index}>

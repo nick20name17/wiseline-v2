@@ -1,4 +1,3 @@
-import { X } from 'lucide-react'
 import { useEffect, useMemo } from 'react'
 import { BooleanParam, StringParam, useQueryParam } from 'use-query-params'
 
@@ -10,11 +9,13 @@ import {
     DropdownMenuContent,
     DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
+import { Separator } from '@/components/ui/separator'
 
 export const Filters = () => {
     const [date, setDate] = useQueryParam('date', StringParam)
     const [overdue, setOverdue] = useQueryParam('overdue', BooleanParam)
     const [completed, setCompleted] = useQueryParam('completed', BooleanParam)
+    const [scheduled] = useQueryParam('scheduled', BooleanParam)
 
     const filters = useMemo(() => {
         const newFilters: string[] = []
@@ -22,11 +23,6 @@ export const Filters = () => {
         if (completed) newFilters.push('completed')
         return newFilters
     }, [overdue, completed])
-
-    const removeFilter = (filter: string) => {
-        if (filter === 'overdue') setOverdue(null)
-        if (filter === 'completed') setCompleted(null)
-    }
 
     useEffect(() => {
         if (overdue && date) {
@@ -40,41 +36,39 @@ export const Filters = () => {
     }, [completed, overdue])
 
     return (
-        <div className='flex items-center gap-5'>
-            <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                    <Button
-                        className='h-[45px]'
-                        variant='outline'>
-                        Filters
-                    </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align='end'>
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button
+                    variant='outline'
+                    className='max-w-[170px]'>
+                    Filters
+                    {filters?.length ? (
+                        <>
+                            <Separator
+                                orientation='vertical'
+                                className='mx-2'
+                            />
+                            <Badge className='pointer-events-none max-w-[82px]'>
+                                {filters?.length} Selected
+                            </Badge>
+                        </>
+                    ) : null}
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align='end'>
+                {scheduled === false ? null : (
                     <DropdownMenuCheckboxItem
                         checked={overdue!}
                         onCheckedChange={setOverdue}>
                         Overdue
                     </DropdownMenuCheckboxItem>
-                    <DropdownMenuCheckboxItem
-                        checked={completed!}
-                        onCheckedChange={setCompleted}>
-                        Completed
-                    </DropdownMenuCheckboxItem>
-                </DropdownMenuContent>
-            </DropdownMenu>
-
-            <div className='flex items-center gap-2'>
-                {filters.map((filter) => (
-                    <Badge
-                        variant='outline'
-                        className='cursor-pointer capitalize hover:border-destructive hover:text-destructive'
-                        key={filter}
-                        onClick={() => removeFilter(filter)}>
-                        {filter}
-                        <X className='ml-1 h-3 w-3 font-bold' />
-                    </Badge>
-                ))}
-            </div>
-        </div>
+                )}
+                <DropdownMenuCheckboxItem
+                    checked={completed!}
+                    onCheckedChange={setCompleted}>
+                    Completed
+                </DropdownMenuCheckboxItem>
+            </DropdownMenuContent>
+        </DropdownMenu>
     )
 }

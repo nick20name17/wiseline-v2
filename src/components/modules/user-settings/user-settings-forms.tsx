@@ -135,6 +135,7 @@ export const UserSettingsForms = () => {
                             />
                             <CollapsibleContent>
                                 <Button
+                                    disabled={isLoading}
                                     onClick={stopPropagation}
                                     className='w-full'
                                     type='submit'>

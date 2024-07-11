@@ -9,9 +9,9 @@ import { Fragment, useEffect, useMemo } from 'react'
 import { BooleanParam, StringParam, useQueryParam } from 'use-query-params'
 
 import { Pagination } from '../../controls/pagination'
-import { Statuses } from '../../controls/statuses'
 
-import { SearchBar, TableSkeleton } from '@/components/shared'
+import { TableControls } from './table-controls'
+import { TableSkeleton } from '@/components/shared'
 import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -65,17 +65,18 @@ export const ItemsTable = <_, TValue>({
     const [addUsersProfiles] = useAddUsersProfilesMutation()
 
     const table = useReactTable({
-        data,
-        columns,
         getCoreRowModel: getCoreRowModel(),
-        manualPagination: true,
-        manualSorting: true,
         onPaginationChange: setPagination,
         getPaginationRowModel: getPaginationRowModel(),
-        pageCount,
-        onSortingChange: setSorting,
         getSortedRowModel: getSortedRowModel(),
+        onSortingChange: setSorting,
+        data,
+        columns,
+        pageCount,
+        manualPagination: true,
+        manualSorting: true,
         autoResetPageIndex: false,
+        // enableMultiSort: true,
         enableHiding: true,
         state: {
             sorting,
@@ -126,17 +127,7 @@ export const ItemsTable = <_, TValue>({
 
     return (
         <div className='rounded-md'>
-            <div className='flex w-full flex-wrap items-start justify-between gap-5 border-t border-t-input py-2'>
-                <div className='flex flex-wrap items-center justify-between gap-6 max-sm:w-full'>
-                    <Statuses />
-                    <SearchBar />
-                </div>
-                <Pagination
-                    isDataLoading={isFetching || isLoading}
-                    page='items'
-                    table={table}
-                />
-            </div>
+            <TableControls />
 
             <Table>
                 <TableHeader>
@@ -286,6 +277,12 @@ export const ItemsTable = <_, TValue>({
                     )}
                 </TableBody>
             </Table>
+
+            <Pagination
+                isDataLoading={isFetching || isLoading}
+                page='items'
+                table={table}
+            />
         </div>
     )
 }

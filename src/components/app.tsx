@@ -9,6 +9,8 @@ import {
     FlowSettingsPage,
     LoginPage,
     OrdersPage,
+    PasswordResetConfirmPage,
+    PrioritiesPage,
     RequireAuthProvider,
     UserSettingsPage,
     UsersPage
@@ -67,6 +69,18 @@ const router = createBrowserRouter([
                         <FlowSettingsPage />
                     </RequireAuthProvider>
                 )
+            },
+            {
+                path: routes.priorities,
+                element: (
+                    <RequireAuthProvider>
+                        <PrioritiesPage />
+                    </RequireAuthProvider>
+                )
+            },
+            {
+                path: routes.passwordResetConfirm,
+                element: <PasswordResetConfirmPage />
             },
             {
                 path: routes.login,

@@ -16,6 +16,7 @@ import type {
     OrdersQueryParams,
     OrdersResponse
 } from './ebms.types'
+import { getQueryParamString } from '@/utils'
 
 export const embs = api.injectEndpoints({
     endpoints: (build) => ({
@@ -35,20 +36,20 @@ export const embs = api.injectEndpoints({
             providesTags: ['Categories']
         }),
         getOrders: build.query<OrdersResponse, Partial<OrdersQueryParams>>({
-            query: (params) => ({
-                url: 'ebms/orders/',
-                params
-            }),
+            query: (params) => {
+                const queryParamString = getQueryParamString(params)
+                return `ebms/orders/?${queryParamString}`
+            },
             providesTags: ['Orders']
         }),
         getOrder: build.query<OrdersData, Partial<OrderQueryParams>>({
             query: ({ autoid }) => `ebms/orders/${autoid}/`
         }),
         getItems: build.query<EBMSItemsResponse, Partial<EBMSItemsQueryParams>>({
-            query: (params) => ({
-                url: 'ebms/items/',
-                params
-            }),
+            query: (params) => {
+                const queryParamString = getQueryParamString(params)
+                return `ebms/items/?${queryParamString}`
+            },
             providesTags: ['EBMSItems']
         }),
         getOrdersItems: build.query<OrdersItemsResponse, Partial<OrderItemsQueryParams>>({

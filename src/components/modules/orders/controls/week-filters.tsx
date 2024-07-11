@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { BooleanParam, StringParam, useQueryParam } from 'use-query-params'
 
 import { Progress } from '@/components/ui/progress'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { useGetCategoriesQuery } from '@/store/api/ebms/ebms'
@@ -10,7 +11,7 @@ import { getWorkDays } from '@/utils'
 import type { FormattedDate } from '@/utils/get-work-days'
 
 export const WeekFilters = () => {
-    const [category] = useQueryParam('category', StringParam)
+    const [view] = useQueryParam('view', StringParam)
     const [_, setOverdue] = useQueryParam('overdue', BooleanParam)
     const [scheduled, setScheduled] = useQueryParam('scheduled', BooleanParam)
     const [date, setDate] = useQueryParam('date', StringParam)
@@ -29,28 +30,34 @@ export const WeekFilters = () => {
     }
 
     useEffect(() => {
-        if (!scheduled || category === 'All') {
+        if (!scheduled || view === 'all-orders') {
             setDate(null)
         } else {
             // setDate(date || workingDays[0].date || null)
         }
     }, [scheduled, date])
 
-    return category !== 'All' && scheduled !== undefined ? (
-        <div className='flex items-center gap-x-1 gap-y-10 overflow-x-scroll p-0.5 max-[1118px]:w-full'>
-            <ToggleGroup
-                key={date!}
-                defaultValue={date!}
-                onValueChange={onValueChange}
-                type='single'>
-                {workingDays.map((date) => (
-                    <WeekFilter
-                        key={date.date}
-                        {...date}
-                    />
-                ))}
-            </ToggleGroup>
-        </div>
+    return view !== 'all-orders' && scheduled !== undefined ? (
+        <ScrollArea className='whitespace-nowrap max-xl:w-[500px] max-lg:w-96 max-md:w-80'>
+            <div className='flex items-center gap-x-1 gap-y-10 overflow-x-scroll p-0.5 max-[1118px]:w-full'>
+                <ToggleGroup
+                    key={date!}
+                    defaultValue={date!}
+                    onValueChange={onValueChange}
+                    type='single'>
+                    {workingDays.map((date) => (
+                        <WeekFilter
+                            key={date.date}
+                            {...date}
+                        />
+                    ))}
+                </ToggleGroup>
+            </div>
+            <ScrollBar
+                className='h-2'
+                orientation='horizontal'
+            />
+        </ScrollArea>
     ) : null
 }
 
@@ -107,7 +114,7 @@ const WeekFilter: React.FC<FormattedDate> = ({ date, dateToDisplay }) => {
             {category === 'Rollforming' || category === 'Trim' ? (
                 <Progress
                     indicatorClassName={currentColorClass}
-                    className='h-1.5 bg-neutral-200'
+                    className='h-1.5 w-[90%] bg-neutral-200'
                     value={currentPercentage > 100 ? 100 : currentPercentage}
                 />
             ) : null}

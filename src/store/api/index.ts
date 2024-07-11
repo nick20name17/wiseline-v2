@@ -111,6 +111,7 @@ export const api = createApi({
         'Orders',
         'SalesOrders',
         'Stage',
+        'Priorities',
         'Items',
         'Users',
         'Categories',

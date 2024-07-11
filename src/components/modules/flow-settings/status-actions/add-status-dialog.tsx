@@ -139,6 +139,7 @@ export const AddStatusDialog: React.FC<AddStatusDialogProps> = ({ flowId }) => {
                         </Tabs>
 
                         <Button
+                            disabled={isLoading}
                             onClick={stopPropagation}
                             className='w-full'
                             type='submit'>
