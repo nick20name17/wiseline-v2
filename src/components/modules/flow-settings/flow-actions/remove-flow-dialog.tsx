@@ -1,5 +1,6 @@
 import { Loader2, X } from 'lucide-react'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -10,6 +11,7 @@ import {
     DialogTrigger
 } from '@/components/ui/dialog'
 import { useRemoveFlowMutation } from '@/store/api/flows/flows'
+import { isErrorWithMessage } from '@/utils'
 import { stopPropagation } from '@/utils/stop-events'
 
 interface RemoveFlowDialogProps {
@@ -26,7 +28,10 @@ export const RemoveFlowDialog: React.FC<RemoveFlowDialogProps> = ({ id, name }) 
         try {
             await removeFlow(id).unwrap()
             setOpen(false)
-        } catch {}
+        } catch (error) {
+            const isErrorMessage = isErrorWithMessage(error)
+            toast.error(isErrorMessage ? error.data.detail : 'Something went wrong')
+        }
     }
 
     return (

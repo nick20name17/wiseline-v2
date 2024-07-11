@@ -1,6 +1,7 @@
 import { Edit2Icon, Loader2 } from 'lucide-react'
 import { useState } from 'react'
 import { type SubmitHandler } from 'react-hook-form'
+import { toast } from 'sonner'
 import type { infer as zodInfer } from 'zod'
 
 import { Button } from '@/components/ui/button'
@@ -30,6 +31,7 @@ import type {
     CapacitiesAddData,
     CapacitiesPatchData
 } from '@/store/api/capacities/capacities.types'
+import { isErrorWithMessage } from '@/utils'
 import { stopPropagation } from '@/utils/stop-events'
 
 interface AddCapacityDialogProps {
@@ -59,14 +61,20 @@ export const AddCapacityDialog: React.FC<AddCapacityDialogProps> = ({
         try {
             await addCapacity(data).unwrap()
             reset()
-        } catch {}
+        } catch (error) {
+            const isErrorMessage = isErrorWithMessage(error)
+            toast.error(isErrorMessage ? error.data.detail : 'Something went wrong')
+        }
     }
 
     const handlePatchCapacity = async (data: CapacitiesPatchData) => {
         try {
             await patchCapacity(data).unwrap()
             reset()
-        } catch {}
+        } catch (error) {
+            const isErrorMessage = isErrorWithMessage(error)
+            toast.error(isErrorMessage ? error.data.detail : 'Something went wrong')
+        }
     }
 
     const onSubmit: SubmitHandler<FormData> = (formData) => {

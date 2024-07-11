@@ -1,5 +1,6 @@
 import { Loader2, X } from 'lucide-react'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -10,6 +11,7 @@ import {
     DialogTrigger
 } from '@/components/ui/dialog'
 import { useRemoveStageMutation } from '@/store/api/stages/stages'
+import { isErrorWithMessage } from '@/utils'
 import { stopPropagation } from '@/utils/stop-events'
 
 interface RemoveStatusDialogProps {
@@ -26,7 +28,10 @@ export const RemoveStatusDialog: React.FC<RemoveStatusDialogProps> = ({ id, name
         try {
             await removeStage(id).unwrap()
             setOpen(false)
-        } catch (error) {}
+        } catch (error) {
+            const isErrorMessage = isErrorWithMessage(error)
+            toast.error(isErrorMessage ? error.data.detail : 'Something went wrong')
+        }
     }
 
     return (

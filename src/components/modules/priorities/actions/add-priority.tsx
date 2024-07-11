@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2, PlusCircleIcon } from 'lucide-react'
 import { useState } from 'react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import type { infer as zodInfer } from 'zod'
 
 import { Button } from '@/components/ui/button'
@@ -25,6 +26,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { prioritySchema } from '@/config/schemas'
 import { useAddPriorityMutation } from '@/store/api/priorities/priorities'
 import type { PrioritiesAddData } from '@/store/api/priorities/priorities.types'
+import { isErrorWithMessage } from '@/utils'
 import { stopPropagation } from '@/utils/stop-events'
 
 type FormData = zodInfer<typeof prioritySchema>
@@ -47,7 +49,10 @@ export const AddPriority = () => {
         setOpen(false)
         try {
             await addPriority(data).unwrap()
-        } catch (error) {}
+        } catch (error) {
+            const isErrorMessage = isErrorWithMessage(error)
+            toast.error(isErrorMessage ? error.data.detail : 'Something went wrong')
+        }
     }
 
     const colorPresets = [

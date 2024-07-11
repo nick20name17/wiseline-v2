@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Edit2Icon, Loader2 } from 'lucide-react'
 import { useState } from 'react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import type { infer as zodInfer } from 'zod'
 
 import { Button } from '@/components/ui/button'
@@ -28,6 +29,7 @@ import type {
     PrioritiesData,
     PrioritiesPatchData
 } from '@/store/api/priorities/priorities.types'
+import { isErrorWithMessage } from '@/utils'
 import { stopPropagation } from '@/utils/stop-events'
 
 type FormData = zodInfer<typeof prioritySchema>
@@ -57,7 +59,10 @@ export const EditPriority: React.FC<EditPriorityProps> = ({ priority }) => {
         setOpen(false)
         try {
             await patchPriority(data).unwrap()
-        } catch (error) {}
+        } catch (error) {
+            const isErrorMessage = isErrorWithMessage(error)
+            toast.error(isErrorMessage ? error.data.detail : 'Something went wrong')
+        }
     }
 
     const colorPresets = [

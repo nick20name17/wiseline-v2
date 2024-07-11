@@ -1,6 +1,7 @@
 import { Loader2, PlusCircleIcon } from 'lucide-react'
 import { useState } from 'react'
 import { type SubmitHandler } from 'react-hook-form'
+import { toast } from 'sonner'
 import type { infer as zodInfer } from 'zod'
 
 import { Button } from '@/components/ui/button'
@@ -27,6 +28,7 @@ import { stageSchema } from '@/config/schemas'
 import { useCustomForm } from '@/hooks'
 import { useAddStageMutation } from '@/store/api/stages/stages'
 import type { StagesAddData, StagesData } from '@/store/api/stages/stages.types'
+import { isErrorWithMessage } from '@/utils'
 import { stopPropagation } from '@/utils/stop-events'
 
 interface AddStatusDialogProps {
@@ -55,7 +57,10 @@ export const AddStatusDialog: React.FC<AddStatusDialogProps> = ({ flowId }) => {
         try {
             await addStage(data).unwrap()
             reset()
-        } catch (error) {}
+        } catch (error) {
+            const isErrorMessage = isErrorWithMessage(error)
+            toast.error(isErrorMessage ? error.data.detail : 'Something went wrong')
+        }
     }
 
     const onValueChange = (value: string) => setColor(value)

@@ -1,6 +1,7 @@
 import { format } from 'date-fns'
 import { Loader2, PlusCircleIcon, Send } from 'lucide-react'
 import { type SubmitHandler } from 'react-hook-form'
+import { toast } from 'sonner'
 import { StringParam, useQueryParam } from 'use-query-params'
 import type { infer as zodInfer } from 'zod'
 
@@ -34,7 +35,7 @@ import {
 import type { EBMSItemsData } from '@/store/api/ebms/ebms.types'
 import { useAppSelector } from '@/store/hooks/hooks'
 import { selectUser } from '@/store/slices/auth'
-import { getUpperCaseInitials } from '@/utils'
+import { getUpperCaseInitials, isErrorWithMessage } from '@/utils'
 
 interface CommentsSidebarProps {
     originItem: EBMSItemsData
@@ -69,7 +70,10 @@ export const CommentsSidebar: React.FC<CommentsSidebarProps> = ({ originItem }) 
                 user: userId!,
                 text
             }).unwrap()
-        } catch (error) {}
+        } catch (error) {
+            const isErrorMessage = isErrorWithMessage(error)
+            toast.error(isErrorMessage ? error.data.detail : 'Something went wrong')
+        }
     }
 
     const onSubmit: SubmitHandler<FormData> = (formData) =>

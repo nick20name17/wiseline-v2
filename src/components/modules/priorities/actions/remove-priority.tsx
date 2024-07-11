@@ -1,5 +1,6 @@
 import { Loader2, X } from 'lucide-react'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -12,6 +13,7 @@ import {
 import { useRemovePriorityMutation } from '@/store/api/priorities/priorities'
 import type { PrioritiesData } from '@/store/api/priorities/priorities.types'
 import type { ButtonEvent } from '@/types/common'
+import { isErrorWithMessage } from '@/utils'
 import { stopPropagation } from '@/utils/stop-events'
 
 interface RemovePriorityProps {
@@ -27,7 +29,10 @@ export const RemovePriority: React.FC<RemovePriorityProps> = ({ priority }) => {
         try {
             await removePriority(id).unwrap()
             setOpen(false)
-        } catch (error) {}
+        } catch (error) {
+            const isErrorMessage = isErrorWithMessage(error)
+            toast.error(isErrorMessage ? error.data.detail : 'Something went wrong')
+        }
     }
 
     const onRemove = (e: ButtonEvent) => {

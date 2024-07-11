@@ -1,8 +1,10 @@
 import type { ColumnDef, Table, VisibilityState } from '@tanstack/react-table'
 import type { DragEvent } from 'react'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 import type { UsersProfileData } from '@/store/api/profiles/profiles.types'
+import { isErrorWithMessage } from '@/utils'
 
 export const useColumnOrder = (
     usersProfilesData: UsersProfileData[],
@@ -89,7 +91,10 @@ export function useColumnDragDrop<T>(table: Table<T>, page: string, handleFuncti
 
         try {
             handleFunction({ show_columns: filterdCols.join(','), page })
-        } catch (error) {}
+        } catch (error) {
+            const isErrorMessage = isErrorWithMessage(error)
+            toast.error(isErrorMessage ? error.data.detail : 'Something went wrong')
+        }
     }
 
     return { onDragStart, onDrop }

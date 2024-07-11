@@ -1,6 +1,7 @@
 import { Loader2, PlusCircleIcon } from 'lucide-react'
 import { useState } from 'react'
 import { type SubmitHandler } from 'react-hook-form'
+import { toast } from 'sonner'
 import type { infer as zodInfer } from 'zod'
 
 import { Button } from '@/components/ui/button'
@@ -24,6 +25,7 @@ import { flowSchema } from '@/config/schemas'
 import { useCustomForm } from '@/hooks'
 import { useAddFlowMutation } from '@/store/api/flows/flows'
 import type { FlowsAddData } from '@/store/api/flows/flows.types'
+import { isErrorWithMessage } from '@/utils'
 import { stopPropagation } from '@/utils/stop-events'
 
 interface AddFlowDialogProps {
@@ -46,7 +48,10 @@ export const AddFlowDialog: React.FC<AddFlowDialogProps> = ({ categoryId }) => {
         try {
             await addFlow(data).unwrap()
             reset()
-        } catch {}
+        } catch (error) {
+            const isErrorMessage = isErrorWithMessage(error)
+            toast.error(isErrorMessage ? error.data.detail : 'Something went wrong')
+        }
     }
 
     const onSubmit: SubmitHandler<FormData> = (formData) =>

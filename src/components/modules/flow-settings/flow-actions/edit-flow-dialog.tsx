@@ -1,6 +1,7 @@
 import { Edit2Icon, Loader2 } from 'lucide-react'
 import { useState } from 'react'
 import { type SubmitHandler } from 'react-hook-form'
+import { toast } from 'sonner'
 import type { infer as zodInfer } from 'zod'
 
 import { Button } from '@/components/ui/button'
@@ -24,6 +25,7 @@ import { flowSchema } from '@/config/schemas'
 import { useCustomForm } from '@/hooks'
 import { usePatchFlowMutation } from '@/store/api/flows/flows'
 import type { FlowsPatchData } from '@/store/api/flows/flows.types'
+import { isErrorWithMessage } from '@/utils'
 import { stopPropagation } from '@/utils/stop-events'
 
 interface EditFlowDialogProps {
@@ -47,7 +49,10 @@ export const EditFlowDialog: React.FC<EditFlowDialogProps> = ({ id, name }) => {
         try {
             await patch(data).unwrap()
             reset()
-        } catch {}
+        } catch (error) {
+            const isErrorMessage = isErrorWithMessage(error)
+            toast.error(isErrorMessage ? error.data.detail : 'Something went wrong')
+        }
     }
 
     const onSubmit: SubmitHandler<FormData> = (formData) =>

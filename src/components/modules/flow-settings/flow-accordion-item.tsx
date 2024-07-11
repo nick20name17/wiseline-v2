@@ -15,6 +15,7 @@ import {
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 import { FlowActions } from './flow-actions/flow-actions'
 import { AddStatusDialog } from './status-actions/add-status-dialog'
@@ -34,6 +35,7 @@ import {
 import type { FlowsData } from '@/store/api/flows/flows.types'
 import { useGetStagesQuery, usePatchStageMutation } from '@/store/api/stages/stages'
 import type { StagesData, StagesPatchData } from '@/store/api/stages/stages.types'
+import { isErrorWithMessage } from '@/utils'
 
 interface FlowAccordionItemProps {
     flow: FlowsData
@@ -69,7 +71,10 @@ export const FlowAccordionItem: React.FC<FlowAccordionItemProps> = ({ flow }) =>
     const handlePatchStage = async (data: StagesPatchData) => {
         try {
             await patchStage(data).unwrap()
-        } catch (error) {}
+        } catch (error) {
+            const isErrorMessage = isErrorWithMessage(error)
+            toast.error(isErrorMessage ? error.data.detail : 'Something went wrong')
+        }
     }
 
     const handleDragEnd = (event: DragEndEvent) => {
