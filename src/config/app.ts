@@ -1,3 +1,3 @@
-export const appName = 'Wiseline' as stirng[]
+export const appName = 'Wiseline'
 
 export const apiBaseUrl = 'https://api.wiseline.app/'
